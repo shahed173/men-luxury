@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>متجر إليجانس للأزياء الرجالية الفاخرة | ELEGANCE Men's Luxury Store</title>
+  
+  <!-- FontAwesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- ================= Top Bar ================= -->
+  <div class="top-bar">
+    <div>
+      <i class="fa-solid fa-truck-fast"></i>
+      <span>شحن مجاني لكافة مدن المملكة للطلبات فوق 300 ر.س | استخدم كود: </span>
+      <strong style="color:#fbbf24; letter-spacing:1px;">ELEGANCE20</strong>
+      <span> للحصول على خصم 20%</span>
+    </div>
+    <div style="display:flex; gap:16px;">
+      <span><i class="fa-solid fa-shield-halved"></i> دفع إلكتروني آمن 100%</span>
+      <span><i class="fa-solid fa-phone"></i> خدمة العملاء: 800-123-4567</span>
+    </div>
+  </div>
+
+  <!-- ================= Header / Navbar ================= -->
+  <header class="header">
+    <nav class="navbar">
+      <!-- Brand Logo -->
+      <a href="#home" class="brand-logo">
+        <div class="brand-icon">
+          <i class="fa-solid fa-crown"></i>
+        </div>
+        <div class="brand-name">
+          <span>ELEGANCE</span>
+          <span class="sub">خياطة وأزياء رجالية فاخرة</span>
+        </div>
+      </a>
+
+      <!-- Navigation Links -->
+      <ul class="nav-links">
+        <li><a href="#home" class="nav-link active">الرئيسية</a></li>
+        <li><a href="#catalog" class="nav-link" onclick="window.app.currentFilter.category='all'; window.app.renderCatalog();">التشكيلة الكاملة</a></li>
+        <li><a href="#catalog" class="nav-link" onclick="window.app.currentFilter.category='suits'; window.app.renderCatalog();">بدلات رسمية</a></li>
+        <li><a href="#catalog" class="nav-link" onclick="window.app.currentFilter.category='shirts'; window.app.renderCatalog();">قمصان فاخرة</a></li>
+        <li><a href="#catalog" class="nav-link" onclick="window.app.currentFilter.category='pants'; window.app.renderCatalog();">بناطيل</a></li>
+        <li><a href="#catalog" class="nav-link" onclick="window.app.currentFilter.category='accessories'; window.app.renderCatalog();">إكسسوارات</a></li>
+      </ul>
+
+      <!-- Navbar Action Buttons -->
+      <div class="nav-actions">
+        <!-- Quick Search -->
+        <button class="icon-btn" title="البحث في المنتجات" onclick="document.getElementById('catalog').scrollIntoView(); document.getElementById('catalogSearchInput').focus();">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+
+        <!-- Wishlist -->
+        <button class="icon-btn" title="قائمة الرغبات" onclick="window.app.showToast('قائمتك المفضلة تحتوي على ' + window.app.wishlist.length + ' عناصر');">
+          <i class="fa-regular fa-heart"></i>
+          <span class="badge-count wishlist-badge-count" style="display:none;">0</span>
+        </button>
+
+        <!-- User Profile / Login -->
+        <button id="userBtn" class="icon-btn" title="حسابي" onclick="window.app.openAuthModal()">
+          <i class="fa-regular fa-user"></i>
+        </button>
+
+        <!-- Cart Button -->
+        <button id="openCartBtn" class="icon-btn" title="سلة التسوق" style="background:#0f172a; color:#fff;">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span class="badge-count cart-badge-count" style="display:none;">0</span>
+        </button>
+
+        <!-- Mobile Toggle -->
+        <button class="icon-btn hamburger-btn" onclick="document.querySelector('.nav-links').classList.toggle('active')">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ================= Hero Section ================= -->
+  <section id="home" class="hero">
+    <div class="hero-container">
+      <div class="hero-text">
+        <div class="hero-badge">
+          <i class="fa-solid fa-sparkles"></i> تشكيلة خريف وشتاء 2026 الحصرية
+        </div>
+        <h1 class="hero-title">
+          فخامة الحضور، وبراعة <br /><span class="highlight">التفصيل الإيطالي</span>
+        </h1>
+        <p class="hero-desc">
+          صُممت قطعنا بعناية فائقة لتمنحك إطلالة مهيبة تجمع بين أصالة الصوف الإنجليزي ونعومة القطن المصري بنسبة 100%. أزياء تصنع الفارق في كل اجتماع ومناسبة.
+        </p>
+        <div class="hero-actions">
+          <a href="#catalog" class="btn btn-primary">
+            <i class="fa-solid fa-bag-shopping"></i> تسوق التشكيلة الجديدة
+          </a>
+          <button class="btn btn-secondary" onclick="window.app.currentFilter.category='suits'; window.app.renderCatalog(); document.getElementById('catalog').scrollIntoView();">
+            <i class="fa-solid fa-user-tie"></i> استكشف البدلات الملكية
+          </button>
+        </div>
+      </div>
+
+      <div class="hero-image-wrapper">
+        <div class="hero-img-card">
+          <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=1000&q=80" alt="بدلات رجالية فاخرة" />
+        </div>
+        <div class="hero-floating-card">
+          <div class="floating-icon">
+            <i class="fa-solid fa-award"></i>
+          </div>
+          <div class="floating-text">
+            <h4>ضمان جودة الأقمشة 100%</h4>
+            <p>صوف ميرينو طبيعي وتفصيل يدوي متقن</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Features Strip ================= -->
+  <div class="features-strip">
+    <div class="features-grid">
+      <div class="feature-box">
+        <div class="feature-icon-circle">
+          <i class="fa-solid fa-truck-fast"></i>
+        </div>
+        <div class="feature-content">
+          <h4>شحن سريع ومجاني</h4>
+          <p>توصيل آمن لباب منزلك خلال 24 - 48 ساعة</p>
+        </div>
+      </div>
+
+      <div class="feature-box">
+        <div class="feature-icon-circle">
+          <i class="fa-solid fa-credit-card"></i>
+        </div>
+        <div class="feature-content">
+          <h4>دفع مرن وآمن</h4>
+          <p>مدى، فيزا، ماستركارد أو الدفع عند الاستلام</p>
+        </div>
+      </div>
+
+      <div class="feature-box">
+        <div class="feature-icon-circle">
+          <i class="fa-solid fa-arrow-rotate-left"></i>
+        </div>
+        <div class="feature-content">
+          <h4>استبدال واسترجاع سهل</h4>
+          <p>إرجاع مجاني وسلس خلال 14 يوماً من الاستلام</p>
+        </div>
+      </div>
+
+      <div class="feature-box">
+        <div class="feature-icon-circle">
+          <i class="fa-solid fa-scissors"></i>
+        </div>
+        <div class="feature-content">
+          <h4>قصّات قياسية وتفصيل</h4>
+          <p>مقاسات دقيقة مطابقة لأرقى المعايير العالمية</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= Categories Showcase ================= -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-subtitle">الفئات والتصنيفات</div>
+      <h2 class="section-title">تسوق حسب فئة الأزياء</h2>
+      <p class="section-desc">اختر من بين مجموعاتنا المختارة بعناية لأناقة متكاملة من الرأس حتى أخمص القدمين.</p>
+    </div>
+
+    <div class="categories-grid">
+      <!-- 1. Suits -->
+      <div class="category-card" onclick="window.app.currentFilter.category='suits'; window.app.renderCatalog(); document.getElementById('catalog').scrollIntoView();">
+        <img src="https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&w=800&q=80" alt="بدلات رسمية" />
+        <div class="category-overlay">
+          <h3>بدلات رسمية وتوكسيدو</h3>
+          <p>قصّات إيطالية للمناسبات والاجتماعات الرفيعة</p>
+        </div>
+      </div>
+
+      <!-- 2. Shirts -->
+      <div class="category-card" onclick="window.app.currentFilter.category='shirts'; window.app.renderCatalog(); document.getElementById('catalog').scrollIntoView();">
+        <img src="https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=800&q=80" alt="قمصان فاخرة" />
+        <div class="category-overlay">
+          <h3>قمصان كلاسيكية وكاجوال</h3>
+          <p>منسوجة من القطن المصري بنسبة 100% المقاوم للتجعد</p>
+        </div>
+      </div>
+
+      <!-- 3. Pants -->
+      <div class="category-card" onclick="window.app.currentFilter.category='pants'; window.app.renderCatalog(); document.getElementById('catalog').scrollIntoView();">
+        <img src="https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=800&q=80" alt="بناطيل رجالية" />
+        <div class="category-overlay">
+          <h3>بناطيل شينو ورسمية</h3>
+          <p>أقمشة صوف وقطن متينة بحزام تعديل جانبي أنيق</p>
+        </div>
+      </div>
+
+      <!-- 4. Accessories -->
+      <div class="category-card" onclick="window.app.currentFilter.category='accessories'; window.app.renderCatalog(); document.getElementById('catalog').scrollIntoView();">
+        <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=800&q=80" alt="إكسسوارات رجالية" />
+        <div class="category-overlay">
+          <h3>إكسسوارات وأحزمة وساعات</h3>
+          <p>تفاصيل تصنع الفارق وتكمل هيبة مظهرك</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Featured & Best Sellers Section ================= -->
+  <section class="section" style="background:#ffffff; border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
+    <div class="section-header">
+      <div class="section-subtitle">المختارات الفاخرة</div>
+      <h2 class="section-title">الأكثر طلباً وتفضيلاً</h2>
+      <p class="section-desc">قطع نالت ثقة عملائنا وحققت أعلى التقييمات لجودتها ودقة تفصيلها.</p>
+    </div>
+
+    <!-- Featured Products Container -->
+    <div id="homeFeaturedProducts" class="products-grid">
+      <!-- Populated Dynamically via app.js -->
+    </div>
+  </section>
+
+  <!-- ================= Promotional Banner ================= -->
+  <section class="section" style="padding-top:20px; padding-bottom:20px;">
+    <div class="promo-banner">
+      <div class="promo-content">
+        <div style="color:#fbbf24; font-weight:800; font-size:0.9rem; margin-bottom:8px;">عرض حصري لفترة محدودة</div>
+        <h2>وفر 20% على إجمالي طلبك اليوم</h2>
+        <p>استمتع بتجربة تسوق راقية واحصل على خصم فوري 20% عند استخدام رمز الكوبون أثناء إتمام عملية الشراء.</p>
+        
+        <div class="promo-code-box">
+          <span>كود الخصم:</span>
+          <span class="code">ELEGANCE20</span>
+          <button class="btn btn-primary" style="padding:4px 12px; font-size:0.8rem;" onclick="navigator.clipboard.writeText('ELEGANCE20'); window.app.showToast('تم نسخ كود الخصم ELEGANCE20!');">
+            نسخ الكود
+          </button>
+        </div>
+
+        <div>
+          <a href="#catalog" class="btn btn-primary">
+            <i class="fa-solid fa-arrow-left"></i> تسوق الآن واستفد من العرض
+          </a>
+        </div>
+      </div>
+
+      <div style="text-align:center;">
+        <img src="https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?auto=format&fit=crop&w=700&q=80" alt="عرض خاص" style="max-width:100%; height:320px; object-fit:cover; border-radius:12px; box-shadow:0 15px 35px rgba(0,0,0,0.4);" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Full Catalog Section ================= -->
+  <section id="catalog" class="section">
+    <div class="section-header">
+      <div class="section-subtitle">كتالوج المتجر</div>
+      <h2 class="section-title">تصفح كافة القطع والتشكيلات</h2>
+      <p class="section-desc">استخدم الفلاتر المتقدمة لتحديد الفئة، المقاس، ونطاق السعر المطلوب بكل سهولة.</p>
+    </div>
+
+    <!-- Catalog Tabs Quick Switch -->
+    <div class="catalog-tabs">
+      <button class="tab-btn catalog-tab-btn active" data-cat="all">كافة التشكيلات</button>
+      <button class="tab-btn catalog-tab-btn" data-cat="suits">بدلات رسمية</button>
+      <button class="tab-btn catalog-tab-btn" data-cat="shirts">قمصان فاخرة</button>
+      <button class="tab-btn catalog-tab-btn" data-cat="pants">بناطيل رجالية</button>
+      <button class="tab-btn catalog-tab-btn" data-cat="accessories">إكسسوارات وساعات</button>
+    </div>
+
+    <div class="catalog-layout">
+      <!-- Sidebar Filters -->
+      <aside class="catalog-sidebar">
+        <!-- Category Filter -->
+        <div class="filter-block">
+          <div class="filter-title">
+            <span>الفئات</span>
+            <i class="fa-solid fa-layer-group" style="color:var(--accent);"></i>
+          </div>
+          <ul class="filter-list">
+            <li class="filter-item active" data-cat="all">
+              <span>كافة المنتجات</span>
+              <i class="fa-solid fa-chevron-left" style="font-size:0.75rem;"></i>
+            </li>
+            <li class="filter-item" data-cat="suits">
+              <span>بدلات رسمية</span>
+              <i class="fa-solid fa-chevron-left" style="font-size:0.75rem;"></i>
+            </li>
+            <li class="filter-item" data-cat="shirts">
+              <span>قمصان فاخرة</span>
+              <i class="fa-solid fa-chevron-left" style="font-size:0.75rem;"></i>
+            </li>
+            <li class="filter-item" data-cat="pants">
+              <span>بناطيل رجالية</span>
+              <i class="fa-solid fa-chevron-left" style="font-size:0.75rem;"></i>
+            </li>
+            <li class="filter-item" data-cat="accessories">
+              <span>إكسسوارات وساعات</span>
+              <i class="fa-solid fa-chevron-left" style="font-size:0.75rem;"></i>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Size Filter -->
+        <div class="filter-block">
+          <div class="filter-title">
+            <span>تصفية بالمقاس</span>
+            <i class="fa-solid fa-ruler-combined" style="color:var(--accent);"></i>
+          </div>
+          <div class="size-chips">
+            <button class="size-chip filter-size-chip" data-size="S">S</button>
+            <button class="size-chip filter-size-chip" data-size="M">M</button>
+            <button class="size-chip filter-size-chip" data-size="L">L</button>
+            <button class="size-chip filter-size-chip" data-size="XL">XL</button>
+            <button class="size-chip filter-size-chip" data-size="XXL">XXL</button>
+          </div>
+        </div>
+
+        <!-- Price Range Filter -->
+        <div class="filter-block">
+          <div class="filter-title">
+            <span>نطاق السعر</span>
+            <i class="fa-solid fa-tag" style="color:var(--accent);"></i>
+          </div>
+          <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:700; color:var(--text-muted); margin-bottom:10px;">
+            <span>100 ر.س</span>
+            <span id="priceRangeVal" style="color:var(--accent);">حتى 2500 ر.س</span>
+          </div>
+          <input type="range" id="priceRangeSlider" min="200" max="2500" step="50" value="2500" style="width:100%; accent-color:var(--accent); cursor:pointer;" oninput="document.getElementById('priceRangeVal').textContent = 'حتى ' + this.value + ' ر.س'; window.app.currentFilter.maxPrice = Number(this.value); window.app.renderCatalog();" />
+        </div>
+
+        <button class="btn btn-outline-dark" style="width:100%; margin-top:10px;" onclick="window.app.resetFilters()">
+          <i class="fa-solid fa-rotate-right"></i> إعادة ضبط الفلاتر
+        </button>
+      </aside>
+
+      <!-- Main Catalog Content -->
+      <main class="catalog-main">
+        <!-- Toolbar -->
+        <div class="catalog-toolbar">
+          <!-- Search Box -->
+          <div class="catalog-search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="catalogSearchInput" placeholder="ابحث باسم القطعة، الخامة، أو اللون..." />
+          </div>
+
+          <!-- Counter and Sort -->
+          <div style="display:flex; align-items:center; gap:16px;">
+            <span id="catalogResultsCount" style="font-size:0.88rem; color:var(--text-muted); font-weight:700;">عرض المنتجات</span>
+            
+            <div style="display:flex; align-items:center; gap:8px;">
+              <label for="catalogSortSelect" style="font-size:0.88rem; font-weight:700;">الترتيب:</label>
+              <select id="catalogSortSelect" class="sort-select">
+                <option value="popular">الأكثر طلباً وتقييماً</option>
+                <option value="price_asc">السعر: من الأقل للأعلى</option>
+                <option value="price_desc">السعر: من الأعلى للأقل</option>
+                <option value="newest">الأحدث وصولاً</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div id="catalogProductsGrid" class="products-grid">
+          <!-- Populated Dynamically via app.js -->
+        </div>
+      </main>
+    </div>
+  </section>
+
+  <!-- ================= Cart Drawer ================= -->
+  <div id="cartDrawerBackdrop" class="drawer-backdrop"></div>
+  <div id="cartDrawer" class="cart-drawer">
+    <div class="drawer-header">
+      <h3>
+        <i class="fa-solid fa-bag-shopping" style="color:var(--accent);"></i>
+        <span>سلة المشتريات</span>
+      </h3>
+      <button id="closeCartDrawerBtn" class="close-drawer-btn">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <!-- Items List -->
+    <div id="drawerCartItems" class="drawer-body">
+      <!-- Items dynamically populated -->
+    </div>
+
+    <!-- Footer Summary -->
+    <div class="drawer-footer">
+      <!-- Promo Code Box in Drawer -->
+      <div style="display:flex; gap:8px; margin-bottom:16px;">
+        <input type="text" id="couponCodeInput" placeholder="كود الخصم (مثال: ELEGANCE20)" style="flex-grow:1; padding:8px 12px; border:1px solid var(--border); border-radius:6px; font-family:inherit; font-size:0.88rem;" />
+        <button id="applyCouponBtn" class="btn btn-secondary" style="background:#0f172a; color:#fff; padding:8px 16px; font-size:0.88rem;">
+          تطبيق
+        </button>
+      </div>
+
+      <div class="summary-line">
+        <span>المجموع الفرعي:</span>
+        <span id="drawerSubtotal">0.00 ر.س</span>
+      </div>
+
+      <div id="drawerDiscountRow" class="summary-line" style="display:none; color:#10b981;">
+        <span>خصم الكوبون:</span>
+        <span id="drawerDiscount">0.00 ر.س</span>
+      </div>
+
+      <div class="summary-line">
+        <span>الشحن والتوصيل:</span>
+        <span id="drawerShipping">مجاني للطلبات فوق 300 ر.س</span>
+      </div>
+
+      <div class="summary-line total">
+        <span>المجموع الكلي:</span>
+        <span id="drawerTotal" style="color:var(--accent);">0.00 ر.س</span>
+      </div>
+
+      <button id="checkoutBtnFromDrawer" class="btn btn-primary" style="width:100%; margin-top:16px; height:50px;">
+        <i class="fa-solid fa-lock"></i> متابعة لإتمام الطلب والدفع
+      </button>
+    </div>
+  </div>
+
+  <!-- ================= Quick View Modal ================= -->
+  <div id="quickViewModal" class="modal-overlay">
+    <div class="modal-window">
+      <button class="close-modal-btn" onclick="window.app.closeModal('quickViewModal')">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div id="quickViewContent">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= Size Guide Modal ================= -->
+  <div id="sizeGuideModal" class="modal-overlay">
+    <div class="modal-window" style="max-width:700px; padding:32px;">
+      <button class="close-modal-btn" onclick="window.app.closeModal('sizeGuideModal')">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      
+      <div style="text-align:center; margin-bottom:24px;">
+        <h2 style="font-size:1.6rem; font-weight:800; color:#0f172a;">دليل المقاسات المعتمد للأزياء الرجالية</h2>
+        <p style="color:#64748b; font-size:0.9rem;">القياسات بالسنتيمتر (cm) لأخذ أدق مقاس يناسب قوامك</p>
+      </div>
+
+      <table style="width:100%; border-collapse:collapse; text-align:center; font-size:0.9rem;">
+        <thead>
+          <tr style="background:#0f172a; color:#fff;">
+            <th style="padding:12px;">المقاس</th>
+            <th style="padding:12px;">محيط الصدر</th>
+            <th style="padding:12px;">محيط الخصر</th>
+            <th style="padding:12px;">عرض الكتفين</th>
+            <th style="padding:12px;">طول الكم</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid #e2e8f0; background:#f8fafc;">
+            <td style="padding:12px; font-weight:700;">48 (S)</td>
+            <td style="padding:12px;">96 - 100 سم</td>
+            <td style="padding:12px;">82 - 86 سم</td>
+            <td style="padding:12px;">44 سم</td>
+            <td style="padding:12px;">63 سم</td>
+          </tr>
+          <tr style="border-bottom:1px solid #e2e8f0;">
+            <td style="padding:12px; font-weight:700;">50 (M)</td>
+            <td style="padding:12px;">100 - 104 سم</td>
+            <td style="padding:12px;">86 - 90 سم</td>
+            <td style="padding:12px;">46 سم</td>
+            <td style="padding:12px;">64 سم</td>
+          </tr>
+          <tr style="border-bottom:1px solid #e2e8f0; background:#f8fafc;">
+            <td style="padding:12px; font-weight:700;">52 (L)</td>
+            <td style="padding:12px;">104 - 108 سم</td>
+            <td style="padding:12px;">90 - 94 سم</td>
+            <td style="padding:12px;">48 سم</td>
+            <td style="padding:12px;">65 سم</td>
+          </tr>
+          <tr style="border-bottom:1px solid #e2e8f0;">
+            <td style="padding:12px; font-weight:700;">54 (XL)</td>
+            <td style="padding:12px;">108 - 114 سم</td>
+            <td style="padding:12px;">94 - 100 سم</td>
+            <td style="padding:12px;">50 سم</td>
+            <td style="padding:12px;">66 سم</td>
+          </tr>
+          <tr style="border-bottom:1px solid #e2e8f0; background:#f8fafc;">
+            <td style="padding:12px; font-weight:700;">56 (XXL)</td>
+            <td style="padding:12px;">114 - 120 سم</td>
+            <td style="padding:12px;">100 - 106 سم</td>
+            <td style="padding:12px;">52 سم</td>
+            <td style="padding:12px;">67 سم</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div style="margin-top:24px; text-align:center;">
+        <button class="btn btn-primary" onclick="window.app.closeModal('sizeGuideModal')">
+          فهمت، العودة لاختيار المقاس
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= Multi-step Checkout Modal ================= -->
+  <div id="checkoutModal" class="modal-overlay">
+    <div class="modal-window checkout-window">
+      <button class="close-modal-btn" onclick="window.app.closeModal('checkoutModal')">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div id="checkoutContentArea">
+        <div class="checkout-header">
+          <h2>إتمام الشراء والدفع الآمن</h2>
+          <p style="color:#64748b; font-size:0.92rem;">أكمل الخطوات التالية لتأكيد طلبك وتوصيله إليك</p>
+        </div>
+
+        <!-- Checkout Steps Indicator -->
+        <div class="checkout-steps">
+          <div id="stepIndicator1" class="checkout-step active">
+            <span class="step-circle">1</span>
+            <span>بيانات الشحن</span>
+          </div>
+          <div style="color:#cbd5e1;"><i class="fa-solid fa-chevron-left"></i></div>
+          <div id="stepIndicator2" class="checkout-step">
+            <span class="step-circle">2</span>
+            <span>طريقة الدفع</span>
+          </div>
+        </div>
+
+        <!-- Step 1: Customer Details & Shipping Address -->
+        <div id="stepContent1" class="checkout-step-content">
+          <div class="form-grid">
+            <div class="form-group full">
+              <label>الاسم الكامل <span style="color:#ef4444;">*</span></label>
+              <input type="text" id="custFullName" class="form-control" placeholder="مثال: فيصل العتيبي" value="فيصل العتيبي" required />
+            </div>
+
+            <div class="form-group">
+              <label>البريد الإلكتروني <span style="color:#ef4444;">*</span></label>
+              <input type="email" id="custEmail" class="form-control" placeholder="faisal@example.com" value="faisal@example.com" required />
+            </div>
+
+            <div class="form-group">
+              <label>رقم الجوال <span style="color:#ef4444;">*</span></label>
+              <input type="tel" id="custPhone" class="form-control" placeholder="05XXXXXXXX" value="0500123456" required />
+            </div>
+
+            <div class="form-group">
+              <label>المدينة <span style="color:#ef4444;">*</span></label>
+              <select id="custCity" class="form-control">
+                <option value="الرياض" selected>الرياض</option>
+                <option value="جدة">جدة</option>
+                <option value="الدمام">الدمام</option>
+                <option value="مكة المكرمة">مكة المكرمة</option>
+                <option value="المدينة المنورة">المدينة المنورة</option>
+                <option value="الخبر">الخبر</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>الرمز البريدي</label>
+              <input type="text" id="custPostalCode" class="form-control" placeholder="12345" value="12211" />
+            </div>
+
+            <div class="form-group full">
+              <label>العنوان التفصيلي (الحي، الشارع، رقم المبنى) <span style="color:#ef4444;">*</span></label>
+              <input type="text" id="custAddress" class="form-control" placeholder="حي النخيل، طريق الملك فهد، مبنى رقم 14" value="حي النخيل، طريق الملك فهد" required />
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:flex-end; margin-top:24px;">
+            <button class="btn btn-primary" onclick="window.checkoutManager.goToStep(2)">
+              المتابعة لاختيار طريقة الدفع <i class="fa-solid fa-arrow-left"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 2: Payment Integration (Stripe Simulated / Credit Card / COD) -->
+        <div id="stepContent2" class="checkout-step-content" style="display:none;">
+          <!-- Payment Method Choice -->
+          <div class="payment-methods-grid">
+            <div class="payment-method-card selected" data-method="credit_card">
+              <div class="payment-method-icon"><i class="fa-solid fa-credit-card"></i></div>
+              <div>
+                <strong style="display:block; font-size:0.95rem;">بطاقة مدى / ائتمانية</strong>
+                <span style="font-size:0.8rem; color:#64748b;">دفع مشفر وآمن عبر Stripe</span>
+              </div>
+            </div>
+
+            <div class="payment-method-card" data-method="cash_on_delivery">
+              <div class="payment-method-icon"><i class="fa-solid fa-money-bill-wave"></i></div>
+              <div>
+                <strong style="display:block; font-size:0.95rem;">الدفع عند الاستلام</strong>
+                <span style="font-size:0.8rem; color:#64748b;">ادفع نقداً لمندوب التوصيل</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Interactive Simulated Credit Card UI -->
+          <div id="creditCardInputsSection">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+              <span style="font-size:0.88rem; font-weight:700; color:#64748b;">معاينة البطاقة التفاعلية:</span>
+              <button id="autofillDemoCardBtn" class="btn btn-secondary" style="background:#fef3c7; color:#92400e; border:1px solid #fde68a; padding:4px 12px; font-size:0.8rem;">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> تعبئة بيانات تجريبية فورية (Stripe Test)
+              </button>
+            </div>
+
+            <div class="interactive-card-box">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div class="card-chip"></div>
+                <div style="font-size:1.3rem; font-weight:900; letter-spacing:1px; color:#fbbf24;">VISA / Mada</div>
+              </div>
+              <div id="cardNumDisplay" class="card-number-display">•••• •••• •••• ••••</div>
+              <div class="card-bottom-row">
+                <div>
+                  <div style="font-size:0.7rem; color:#94a3b8;">حامل البطاقة</div>
+                  <div id="cardHolderDisplay" class="card-holder-name">اسم العميل</div>
+                </div>
+                <div>
+                  <div style="font-size:0.7rem; color:#94a3b8;">ينتهي في</div>
+                  <div id="cardExpiryDisplay" class="card-expiry-display">MM/YY</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-grid">
+              <div class="form-group full">
+                <label>رقم البطاقة (16 رقماً) <span style="color:#ef4444;">*</span></label>
+                <input type="text" id="cardNumberInput" class="form-control" placeholder="4242 4242 4242 4242" maxlength="19" />
+              </div>
+
+              <div class="form-group full">
+                <label>الاسم كما يظهر على البطاقة <span style="color:#ef4444;">*</span></label>
+                <input type="text" id="cardHolderInput" class="form-control" placeholder="FAISAL ALOTAIBI" />
+              </div>
+
+              <div class="form-group">
+                <label>تاريخ الانتهاء <span style="color:#ef4444;">*</span></label>
+                <input type="text" id="cardExpiryInput" class="form-control" placeholder="12/28" maxlength="5" />
+              </div>
+
+              <div class="form-group">
+                <label>رمز الأمان CVC/CVV <span style="color:#ef4444;">*</span></label>
+                <input type="password" id="cardCvvInput" class="form-control" placeholder="888" maxlength="4" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Cash On Delivery Notice -->
+          <div id="codNoticeSection" style="display:none; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px; padding:20px; margin-bottom:20px; text-align:center;">
+            <i class="fa-solid fa-hand-holding-dollar" style="font-size:2rem; color:#16a34a; margin-bottom:8px;"></i>
+            <h4 style="color:#166534; font-weight:800; font-size:1.1rem; margin-bottom:6px;">تم اختيار الدفع عند الاستلام</h4>
+            <p style="color:#15803d; font-size:0.9rem;">سيتم تحصيل المبلغ عند استلام الشحنة من مندوب التوصيل. يرجى توفير المبلغ جاهزاً لتسريع عملية الاستلام.</p>
+          </div>
+
+          <!-- Action Buttons -->
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:24px;">
+            <button class="btn btn-secondary" style="background:#f1f5f9; color:#0f172a;" onclick="window.checkoutManager.goToStep(1)">
+              <i class="fa-solid fa-arrow-right"></i> رجوع لبيانات الشحن
+            </button>
+            <button id="placeOrderBtn" class="btn btn-primary" style="height:48px; padding:0 32px;">
+              <i class="fa-solid fa-shield-check"></i> تأكيد الطلب والدفع الآن
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= Authentication Modal (Login / Register) ================= -->
+  <div id="authModal" class="modal-overlay">
+    <div class="modal-window" style="max-width:480px; padding:36px;">
+      <button class="close-modal-btn" onclick="window.app.closeModal('authModal')">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div style="text-align:center; margin-bottom:24px;">
+        <div class="brand-icon" style="margin:0 auto 12px auto;">
+          <i class="fa-solid fa-crown"></i>
+        </div>
+        <h2 style="font-size:1.6rem; font-weight:900; color:#0f172a;">حساب العملاء</h2>
+        <p style="color:#64748b; font-size:0.88rem;">سجل الدخول لمتابعة طلباتك أو إنشاء حساب جديد</p>
+      </div>
+
+      <!-- Quick Demo Login Helpers -->
+      <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px; margin-bottom:20px; text-align:center;">
+        <span style="font-size:0.8rem; font-weight:700; color:#64748b; display:block; margin-bottom:8px;">تجربة سريعة بنقرة واحدة:</span>
+        <div style="display:flex; gap:8px; justify-content:center;">
+          <button class="btn btn-secondary" style="background:#e2e8f0; color:#0f172a; padding:6px 14px; font-size:0.8rem;" onclick="document.getElementById('loginEmail').value='admin@mensluxury.com'; document.getElementById('loginPass').value='Password123!'; document.getElementById('loginForm').dispatchEvent(new Event('submit'));">
+            دخول كمسؤول
+          </button>
+          <button class="btn btn-secondary" style="background:#e2e8f0; color:#0f172a; padding:6px 14px; font-size:0.8rem;" onclick="document.getElementById('loginEmail').value='customer@example.com'; document.getElementById('loginPass').value='Password123!'; document.getElementById('loginForm').dispatchEvent(new Event('submit'));">
+            دخول كعميل
+          </button>
+        </div>
+      </div>
+
+      <!-- Tabs: Login vs Register -->
+      <div style="display:flex; border-bottom:1px solid #e2e8f0; margin-bottom:20px;">
+        <button id="authTabLogin" style="flex:1; padding:10px; background:none; border:none; border-bottom:2px solid var(--accent); font-weight:800; font-family:inherit; cursor:pointer;" onclick="document.getElementById('loginForm').style.display='block'; document.getElementById('registerForm').style.display='none'; this.style.borderBottom='2px solid var(--accent)'; document.getElementById('authTabReg').style.borderBottom='none';">
+          تسجيل الدخول
+        </button>
+        <button id="authTabReg" style="flex:1; padding:10px; background:none; border:none; font-weight:700; color:#64748b; font-family:inherit; cursor:pointer;" onclick="document.getElementById('loginForm').style.display='none'; document.getElementById('registerForm').style.display='block'; this.style.borderBottom='2px solid var(--accent)'; document.getElementById('authTabLogin').style.borderBottom='none';">
+          حساب جديد
+        </button>
+      </div>
+
+      <!-- Login Form -->
+      <form id="loginForm">
+        <div class="form-group">
+          <label>البريد الإلكتروني</label>
+          <input type="email" id="loginEmail" class="form-control" placeholder="name@example.com" value="customer@example.com" required />
+        </div>
+        <div class="form-group">
+          <label>كلمة المرور</label>
+          <input type="password" id="loginPass" class="form-control" placeholder="••••••••" value="Password123!" required />
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%; margin-top:10px;">
+          دخول إلى الحساب
+        </button>
+      </form>
+
+      <!-- Register Form -->
+      <form id="registerForm" style="display:none;">
+        <div class="form-group">
+          <label>الاسم الكامل</label>
+          <input type="text" id="regName" class="form-control" placeholder="اسمك الكريم" required />
+        </div>
+        <div class="form-group">
+          <label>البريد الإلكتروني</label>
+          <input type="email" id="regEmail" class="form-control" placeholder="name@example.com" required />
+        </div>
+        <div class="form-group">
+          <label>رقم الجوال</label>
+          <input type="tel" id="regPhone" class="form-control" placeholder="05XXXXXXXX" />
+        </div>
+        <div class="form-group">
+          <label>كلمة المرور</label>
+          <input type="password" id="regPass" class="form-control" placeholder="••••••••" required />
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%; margin-top:10px;">
+          إنشاء الحساب
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= Footer ================= -->
+  <footer class="footer">
+    <div class="footer-container">
+      <!-- Col 1: About -->
+      <div class="footer-col">
+        <a href="#home" class="brand-logo" style="margin-bottom:16px;">
+          <div class="brand-icon"><i class="fa-solid fa-crown"></i></div>
+          <div class="brand-name" style="color:#fff;">
+            <span>ELEGANCE</span>
+            <span class="sub" style="color:#fbbf24;">متجر الأزياء الرجالية الفاخرة</span>
+          </div>
+        </a>
+        <p style="font-size:0.9rem; line-height:1.8;">
+          وجهتكم الأولى للأناقة الكلاسيكية والعصرية الراقية. نختار أجود خامات الصوف الإيطالي والقطن المصري لنمنح الرجل العصري حضوراً استثنائياً يلفت الأنظار في كافة المناسبات.
+        </p>
+      </div>
+
+      <!-- Col 2: Categories -->
+      <div class="footer-col">
+        <h4>التشكيلات والأزياء</h4>
+        <ul class="footer-links">
+          <li><a href="#catalog" onclick="window.app.currentFilter.category='suits'; window.app.renderCatalog();">بدلات رسمية وتوكسيدو</a></li>
+          <li><a href="#catalog" onclick="window.app.currentFilter.category='shirts'; window.app.renderCatalog();">قمصان قطن مصري فاخر</a></li>
+          <li><a href="#catalog" onclick="window.app.currentFilter.category='pants'; window.app.renderCatalog();">بناطيل صوف وتشينو</a></li>
+          <li><a href="#catalog" onclick="window.app.currentFilter.category='accessories'; window.app.renderCatalog();">ساعات وإكسسوارات رجالية</a></li>
+          <li><a href="#catalog" onclick="window.app.currentFilter.category='all'; window.app.renderCatalog();">عروض وتخفيضات 2026</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 3: Customer Care -->
+      <div class="footer-col">
+        <h4>خدمة العملاء</h4>
+        <ul class="footer-links">
+          <li><a href="#" onclick="event.preventDefault(); window.app.openSizeGuide();">دليل المقاسات المعتمد</a></li>
+          <li><a href="#" onclick="event.preventDefault(); window.app.showToast('شحن مجاني لكافة طلبات 300 ر.س فأكثر والتوصيل خلال 48 ساعة');">الشحن والتوصيل</a></li>
+          <li><a href="#" onclick="event.preventDefault(); window.app.showToast('يمكنك استرجاع واستبدال المنتجات مجاناً خلال 14 يوماً');">سياسة الاسترجاع والاستبدال</a></li>
+          <li><a href="#" onclick="event.preventDefault(); window.app.showToast('كافة عمليات الدفع محمية بتشفير 256-bit SSL آمن بالكامل');">الأمان وطرق الدفع</a></li>
+          <li><a href="#" onclick="event.preventDefault(); window.app.openAuthModal();">تتبع حالة طلبك</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 4: Newsletter & Contact -->
+      <div class="footer-col">
+        <h4>النشرة البريدية الحصرية</h4>
+        <p style="font-size:0.88rem; margin-bottom:14px;">اشترك لتصلك أحدث التشكيلات وكوبونات الخصم الحصرية قبل الجميع:</p>
+        <div style="display:flex; gap:6px;">
+          <input type="email" placeholder="بريدك الإلكتروني..." style="padding:10px 14px; border:1px solid #334155; border-radius:6px; background:#1e293b; color:#fff; font-family:inherit; font-size:0.88rem; flex-grow:1; outline:none;" />
+          <button class="btn btn-primary" style="padding:10px 18px;" onclick="window.app.showToast('شكراً لاشتراكك في نشرتنا الخاصة!');">
+            اشتراك
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Strip -->
+    <div class="footer-bottom">
+      <div>
+        © 2026 متجر إليجانس للأزياء الرجالية (ELEGANCE). جميع الحقوق محفوظة.
+      </div>
+      <div class="payment-icons-strip">
+        <i class="fa-brands fa-cc-visa" title="Visa"></i>
+        <i class="fa-brands fa-cc-mastercard" title="Mastercard"></i>
+        <i class="fa-brands fa-cc-apple-pay" title="Apple Pay"></i>
+        <i class="fa-brands fa-stripe" title="Stripe"></i>
+        <i class="fa-solid fa-money-bill-wave" title="الدفع عند الاستلام"></i>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= Toast Notifications Container ================= -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- JavaScript Modules -->
+  <script src="js/products.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/checkout.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
