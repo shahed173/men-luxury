@@ -88,79 +88,68 @@
       this.drawCart();
     }
 
-    removeSortAndViewControls() {
-      const keywords = ['عرض المنتجات', 'الأكثر طلباً', 'الأكثر طلبا', 'تقييماً', 'تقييما', 'ابحث باسم القطعة', 'ابحث باسم'];
-
-      const inputs = Array.from(document.body.querySelectorAll('input'));
-      for (const inp of inputs) {
-        if (inp.closest('#liveStoreApp')) continue;
-        const ph = (inp.getAttribute('placeholder') || '').trim();
-        if (ph.includes('ابحث باسم القطعة') || ph.includes('ابحث باسم')) {
-          const box = inp.closest('.search-bar, .search-box, .filter-bar, .filters-bar, .toolbar, form') || inp;
-          if (box && box.getBoundingClientRect().height < 220) {
-            box.remove();
-          } else {
-            inp.remove();
-          }
-        }
+    cleanOldCatalogUI() {
+      const idsToHide = [
+        'catalogSearchInput',
+        'catalogResultsCount',
+        'catalogSortSelect',
+        'priceRangeSlider',
+        'priceRangeVal'
+      ];
+      for (const id of idsToHide) {
+        const el = document.getElementById(id);
+        if (el) el.remove();
       }
 
-      const nodes = Array.from(document.body.querySelectorAll('div, section, label, span, select, button, p'));
-      for (const el of nodes) {
-        if (el === document.body || el.id === 'liveStoreApp' || el.closest('#liveStoreApp')) continue;
-        if (el.querySelector('input')) continue;
+      const toolbar = document.querySelector('#catalog .catalog-toolbar');
+      if (toolbar) toolbar.remove();
+
+      const sidebar = document.querySelector('#catalog .catalog-sidebar');
+      if (sidebar) sidebar.remove();
+
+      const catalogLayout = document.querySelector('#catalog .catalog-layout');
+      if (catalogLayout) {
+        catalogLayout.style.setProperty('display', 'block', 'important');
+        catalogLayout.style.setProperty('grid-template-columns', '1fr', 'important');
+      }
+
+      const catalogMain = document.querySelector('#catalog .catalog-main');
+      if (catalogMain) {
+        catalogMain.style.setProperty('width', '100%', 'important');
+        catalogMain.style.setProperty('max-width', '100%', 'important');
+        catalogMain.style.setProperty('direction', 'rtl', 'important');
+        catalogMain.style.setProperty('text-align', 'right', 'important');
+      }
+
+      const words = ['عرض المنتجات', 'الترتيب:', 'الترتيب', 'الأكثر طلباً', 'الأكثر طلبا', 'تقييماً', 'تقييما', 'ابحث باسم القطعة'];
+      const els = Array.from(document.querySelectorAll('#catalog label, #catalog span, #catalog select, #catalog input, #catalog p'));
+      for (const el of els) {
+        if (el.closest('#liveStoreApp')) continue;
         const txt = (el.textContent || '').trim();
-        if (!txt || txt.length > 90) continue;
-        if (keywords.some(k => txt.includes(k))) {
+        const ph = (el.getAttribute && el.getAttribute('placeholder')) || '';
+        if (words.some(w => txt.includes(w) || ph.includes(w))) {
           el.remove();
         }
       }
     }
 
-    findSearchAnchor() {
-      const inputs = Array.from(document.body.querySelectorAll('input'));
-      for (const inp of inputs) {
-        if (inp.closest('#liveStoreApp')) continue;
-        const ph = (inp.getAttribute('placeholder') || '').trim();
-        if (ph.includes('ابحث باسم القطعة')) {
-          return inp.closest('.search-bar, .search-box, .filter-bar, .filters-bar, .toolbar, .row, form') || inp.parentElement || inp;
-        }
-      }
-
-      const candidates = Array.from(document.body.querySelectorAll('section, div, main'));
-      let bestAnchor = null;
-      for (const el of candidates) {
-        if (el === document.body || el.id === 'liveStoreApp' || el.closest('#liveStoreApp')) continue;
-        const text = (el.innerText || el.textContent || '').trim();
-        const hasToolbar =
-          text.includes('عرض المنتجات') ||
-          text.includes('الأكثر طلباً') ||
-          text.includes('الأكثر طلبا') ||
-          text.includes('ابحث باسم القطعة');
-
-        if (hasToolbar && el.offsetHeight > 25 && el.offsetHeight < 500) {
-          bestAnchor = el;
-        }
-      }
-      return bestAnchor;
-    }
-
     ensureRoot() {
-      const anchor = this.findSearchAnchor();
-      this.removeSortAndViewControls();
+      this.cleanOldCatalogUI();
 
+      const catalogSection = document.getElementById('catalog');
       let root = document.getElementById('liveStoreApp');
       if (!root) {
         root = document.createElement('div');
         root.id = 'liveStoreApp';
-        root.style.cssText = 'max-width:1200px; width:100%; margin:16px 0 40px auto; padding:0 14px; font-family:inherit; direction:rtl; text-align:right;';
+        root.style.cssText = 'max-width:1200px; width:100%; margin:12px auto 40px; padding:0 14px; font-family:inherit; direction:rtl; text-align:right;';
       }
 
-      if (anchor && anchor.parentNode && anchor.nextSibling !== root) {
-        anchor.parentNode.insertBefore(root, anchor.nextSibling);
+      if (catalogSection && root.parentNode !== catalogSection) {
+        catalogSection.appendChild(root);
       } else if (!root.parentNode) {
         document.body.appendChild(root);
       }
+
       return root;
     }
 
