@@ -7,10 +7,16 @@
   const ITEMS = [
     { id: 1, name: 'بدلة توكسيدو ملكية سوداء فاخرة', cat: 'بدلات رسمية', price: 240, img: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&w=800&q=80', desc: 'بدلة توكسيدو فاخرة للمناسبات والاجتماعات الرسمية.' },
     { id: 2, name: 'بدلة كلاسيكية زرقاء كحلية', cat: 'بدلات رسمية', price: 185, img: 'https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?auto=format&fit=crop&w=800&q=80', desc: 'بدلة كحلية أنيقة للعمل والمناسبات.' },
-    { id: 3, name: 'قميص أبيض ناصع من القطن المصري', cat: 'قمصان فاخرة', price: 42, img: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=800&q=80', desc: 'قميص أبيض ناعم ومريح للدوام والمناسبات.' },
-    { id: 4, name: 'قميص أكسفورد أزرق سماوي', cat: 'قمصان فاخرة', price: 38, img: 'https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=800&q=80', desc: 'قميص سماوي عملي وأنيق.' },
-    { id: 5, name: 'بنطال تشينو كلاسيكي كحلي', cat: 'بناطيل رجالية', price: 44, img: 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=800&q=80', desc: 'بنطال تشينو مريح بقصة عصرية.' },
-    { id: 6, name: 'ساعة كلاسيكية رجالية جلد أسود', cat: 'إكسسوارات', price: 150, img: 'https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&w=800&q=80', desc: 'ساعة رجالية أنيقة بسوار جلدي.' }
+    { id: 3, name: 'بدلة رمادية عصرية بنقشة مربعات', cat: 'بدلات رسمية', price: 195, img: 'https://images.unsplash.com/photo-1598808503746-f34c53b9323e?auto=format&fit=crop&w=800&q=80', desc: 'قصّة حديثة تمنحك حضوراً راقياً في الاجتماعات.' },
+    { id: 4, name: 'بليزر كحلي رسمي بقصة عصرية', cat: 'بدلات رسمية', price: 135, img: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=80', desc: 'بليزر أنيق يسهل تنسيقه مع القمصان والبناطيل.' },
+    { id: 5, name: 'قميص أبيض ناصع من القطن المصري', cat: 'قمصان فاخرة', price: 42, img: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=800&q=80', desc: 'قميص أبيض ناعم ومريح للدوام والمناسبات.' },
+    { id: 6, name: 'قميص أكسفورد أزرق سماوي', cat: 'قمصان فاخرة', price: 38, img: 'https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=800&q=80', desc: 'قميص سماوي عملي وأنيق.' },
+    { id: 7, name: 'قميص كتان بيج صيفي راقٍ', cat: 'قمصان فاخرة', price: 45, img: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=800&q=80', desc: 'خامة خفيفة ومريحة للأجواء الدافئة والإطلالات الهادئة.' },
+    { id: 8, name: 'قميص أسود سادة بقصة Slim Fit', cat: 'قمصان فاخرة', price: 40, img: 'https://images.unsplash.com/photo-1620012253295-c15cc3e65df4?auto=format&fit=crop&w=800&q=80', desc: 'إطلالة مسائية أنيقة مع قصة محددة مريحة.' },
+    { id: 9, name: 'بنطال تشينو كلاسيكي كحلي', cat: 'بناطيل رجالية', price: 44, img: 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=800&q=80', desc: 'بنطال تشينو مريح بقصة عصرية.' },
+    { id: 10, name: 'بنطال قماشي رمادي رسمي', cat: 'بناطيل رجالية', price: 52, img: 'https://images.unsplash.com/photo-1473966968600-fa801b869a1a?auto=format&fit=crop&w=800&q=80', desc: 'بنطال مناسب للبدلات والإطلالات المكتبية اليومية.' },
+    { id: 11, name: 'ساعة كلاسيكية رجالية جلد أسود', cat: 'إكسسوارات', price: 150, img: 'https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&w=800&q=80', desc: 'ساعة رجالية أنيقة بسوار جلدي.' },
+    { id: 12, name: 'ساعة كرونوغراف فضية فاخرة', cat: 'إكسسوارات', price: 175, img: 'https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?auto=format&fit=crop&w=800&q=80', desc: 'تصميم معدني متين يضيف لمسة فخامة لإطلالتك.' }
   ];
 
   class Store {
@@ -82,53 +88,81 @@
       this.drawCart();
     }
 
+    removeSortAndViewControls() {
+      const keywords = ['عرض المنتجات', 'الأكثر طلباً', 'الأكثر طلبا', 'تقييماً', 'تقييما'];
+      const nodes = Array.from(document.body.querySelectorAll('div, section, label, span, select, button, p'));
+      for (const el of nodes) {
+        if (el === document.body || el.id === 'liveStoreApp' || el.closest('#liveStoreApp')) continue;
+        if (el.querySelector('input')) continue;
+        const txt = (el.textContent || '').trim();
+        if (!txt || txt.length > 85) continue;
+        if (keywords.some(k => txt.includes(k))) {
+          el.remove();
+        }
+      }
+    }
+
+    findSearchAnchor() {
+      const inputs = Array.from(document.body.querySelectorAll('input'));
+      for (const inp of inputs) {
+        if (inp.closest('#liveStoreApp')) continue;
+        const ph = (inp.getAttribute('placeholder') || '').trim();
+        if (ph.includes('ابحث باسم القطعة')) {
+          return inp.closest('.search-bar, .search-box, .filter-bar, .filters-bar, .toolbar, .row, form') || inp.parentElement || inp;
+        }
+      }
+
+      const candidates = Array.from(document.body.querySelectorAll('section, div, main'));
+      let bestAnchor = null;
+      for (const el of candidates) {
+        if (el === document.body || el.id === 'liveStoreApp' || el.closest('#liveStoreApp')) continue;
+        const text = (el.innerText || el.textContent || '').trim();
+        const hasToolbar =
+          text.includes('عرض المنتجات') ||
+          text.includes('الأكثر طلباً') ||
+          text.includes('الأكثر طلبا') ||
+          text.includes('ابحث باسم القطعة');
+
+        if (hasToolbar && el.offsetHeight > 25 && el.offsetHeight < 500) {
+          bestAnchor = el;
+        }
+      }
+      return bestAnchor;
+    }
+
     ensureRoot() {
+      this.removeSortAndViewControls();
+
       let root = document.getElementById('liveStoreApp');
       if (!root) {
         root = document.createElement('div');
         root.id = 'liveStoreApp';
-        root.style.cssText = 'max-width:1200px; margin:14px auto 40px; padding:0 14px; font-family:inherit; direction:rtl;';
+        root.style.cssText = 'max-width:1200px; margin:16px auto 40px; padding:0 14px; font-family:inherit; direction:rtl;';
+      }
 
-        const candidates = Array.from(document.body.querySelectorAll('section, div, main'));
-        let bestAnchor = null;
-
-        for (const el of candidates) {
-          if (el === document.body || el.id === 'liveStoreApp' || el.closest('#liveStoreApp')) continue;
-          const text = (el.innerText || el.textContent || '').trim();
-          const hasToolbar =
-            text.includes('عرض المنتجات') ||
-            text.includes('الأكثر طلباً') ||
-            text.includes('الأكثر طلبا') ||
-            text.includes('ابحث باسم القطعة');
-
-          if (hasToolbar && el.offsetHeight > 25 && el.offsetHeight < 500) {
-            bestAnchor = el;
-          }
-        }
-
-        if (bestAnchor && bestAnchor.parentNode) {
-          bestAnchor.parentNode.insertBefore(root, bestAnchor.nextSibling);
-        } else {
-          document.body.appendChild(root);
-        }
+      const anchor = this.findSearchAnchor();
+      if (anchor && anchor.parentNode && anchor.nextSibling !== root) {
+        anchor.parentNode.insertBefore(root, anchor.nextSibling);
+      } else if (!root.parentNode) {
+        document.body.appendChild(root);
       }
       return root;
     }
 
     drawProducts() {
       const root = this.ensureRoot();
-      let grid = document.getElementById('liveProductsGrid');
-      if (!grid) {
-        const title = document.createElement('h2');
-        title.textContent = 'المنتجات المتوفرة';
-        title.style.cssText = 'margin:18px 0 12px; font-size:1.25rem; font-weight:900; color:#0f172a;';
-        grid = document.createElement('div');
-        grid.id = 'liveProductsGrid';
-        grid.style.cssText = 'display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:16px;';
-        root.appendChild(title);
-        root.appendChild(grid);
+      let wrap = document.getElementById('liveProductsSection');
+      if (!wrap) {
+        wrap = document.createElement('div');
+        wrap.id = 'liveProductsSection';
+        wrap.innerHTML = `
+          <h2 style="margin:8px 0 14px; font-size:1.25rem; font-weight:900; color:#0f172a;">المنتجات المتوفرة</h2>
+          <div id="liveProductsGrid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:16px; align-items:stretch;"></div>
+        `;
       }
+      root.prepend(wrap);
 
+      const grid = document.getElementById('liveProductsGrid');
       grid.innerHTML = ITEMS.map(p => `
         <div style="background:#fff; border:1px solid #e2e8f0; border-radius:12px; padding:12px; display:flex; flex-direction:column; gap:8px; box-shadow:0 4px 14px rgba(15,23,42,0.05);">
           <img src="${p.img}" alt="${p.name}" style="width:100%; height:220px; object-fit:cover; border-radius:8px; background:#f8fafc;">
@@ -146,13 +180,15 @@
 
     drawCart() {
       const root = this.ensureRoot();
+      this.drawProducts();
+
       let box = document.getElementById('liveCartBox');
       if (!box) {
         box = document.createElement('div');
         box.id = 'liveCartBox';
-        box.style.cssText = 'background:#fff; border:1px solid #cbd5e1; border-radius:14px; padding:16px; margin-bottom:18px; box-shadow:0 6px 20px rgba(15,23,42,0.06);';
-        root.prepend(box);
+        box.style.cssText = 'background:#fff; border:1px solid #cbd5e1; border-radius:14px; padding:16px; margin-top:24px; box-shadow:0 6px 20px rgba(15,23,42,0.06);';
       }
+      root.appendChild(box);
 
       const { count, sub, disc, ship, total } = this.calc();
       const rows = this.cart.length
@@ -298,8 +334,13 @@
     }
 
     start() {
-      this.drawCart();
       this.drawProducts();
+      this.drawCart();
+      setTimeout(() => {
+        this.ensureRoot();
+        this.drawProducts();
+        this.drawCart();
+      }, 250);
     }
   }
 
