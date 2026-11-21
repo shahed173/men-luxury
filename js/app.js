@@ -4,19 +4,27 @@
   const FREE_SHIPPING_MIN = 50;
   const CODES = { ELEGANCE20: 0.2, ELEGANCE10: 0.1, WELCOME15: 0.15 };
 
+  const CAT_MAP = {
+    all: 'all',
+    suits: 'بدلات رسمية',
+    shirts: 'قمصان فاخرة',
+    pants: 'بناطيل رجالية',
+    accessories: 'إكسسوارات'
+  };
+
   const ITEMS = [
-    { id: 1, name: 'بدلة توكسيدو ملكية سوداء فاخرة', cat: 'بدلات رسمية', price: 240, img: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&w=800&q=80', desc: 'بدلة توكسيدو فاخرة للمناسبات والاجتماعات الرسمية.' },
-    { id: 2, name: 'بدلة كلاسيكية زرقاء كحلية', cat: 'بدلات رسمية', price: 185, img: 'https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?auto=format&fit=crop&w=800&q=80', desc: 'بدلة كحلية أنيقة للعمل والمناسبات.' },
-    { id: 3, name: 'بدلة رمادية عصرية بنقشة مربعات', cat: 'بدلات رسمية', price: 195, img: 'https://images.unsplash.com/photo-1598808503746-f34c53b9323e?auto=format&fit=crop&w=800&q=80', desc: 'قصّة حديثة تمنحك حضوراً راقياً في الاجتماعات.' },
-    { id: 4, name: 'بليزر كحلي رسمي بقصة عصرية', cat: 'بدلات رسمية', price: 135, img: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=80', desc: 'بليزر أنيق يسهل تنسيقه مع القمصان والبناطيل.' },
-    { id: 5, name: 'قميص أبيض ناصع من القطن المصري', cat: 'قمصان فاخرة', price: 42, img: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=800&q=80', desc: 'قميص أبيض ناعم ومريح للدوام والمناسبات.' },
-    { id: 6, name: 'قميص أكسفورد أزرق سماوي', cat: 'قمصان فاخرة', price: 38, img: 'https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=800&q=80', desc: 'قميص سماوي عملي وأنيق.' },
-    { id: 7, name: 'قميص كتان بيج صيفي راقٍ', cat: 'قمصان فاخرة', price: 45, img: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=800&q=80', desc: 'خامة خفيفة ومريحة للأجواء الدافئة والإطلالات الهادئة.' },
-    { id: 8, name: 'قميص أسود سادة بقصة Slim Fit', cat: 'قمصان فاخرة', price: 40, img: 'https://images.unsplash.com/photo-1620012253295-c15cc3e65df4?auto=format&fit=crop&w=800&q=80', desc: 'إطلالة مسائية أنيقة مع قصة محددة مريحة.' },
-    { id: 9, name: 'بنطال تشينو كلاسيكي كحلي', cat: 'بناطيل رجالية', price: 44, img: 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=800&q=80', desc: 'بنطال تشينو مريح بقصة عصرية.' },
-    { id: 10, name: 'بنطال قماشي رمادي رسمي', cat: 'بناطيل رجالية', price: 52, img: 'https://images.unsplash.com/photo-1473966968600-fa801b869a1a?auto=format&fit=crop&w=800&q=80', desc: 'بنطال مناسب للبدلات والإطلالات المكتبية اليومية.' },
-    { id: 11, name: 'ساعة كلاسيكية رجالية جلد أسود', cat: 'إكسسوارات', price: 150, img: 'https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&w=800&q=80', desc: 'ساعة رجالية أنيقة بسوار جلدي.' },
-    { id: 12, name: 'ساعة كرونوغراف فضية فاخرة', cat: 'إكسسوارات', price: 175, img: 'https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?auto=format&fit=crop&w=800&q=80', desc: 'تصميم معدني متين يضيف لمسة فخامة لإطلالتك.' }
+    { id: 1, name: 'بدلة توكسيدو ملكية سوداء فاخرة', cat: 'بدلات رسمية', sizes: ['M', 'L', 'XL', 'XXL'], price: 240, img: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&w=800&q=80', desc: 'بدلة توكسيدو فاخرة للمناسبات والاجتماعات الرسمية.' },
+    { id: 2, name: 'بدلة كلاسيكية زرقاء كحلية', cat: 'بدلات رسمية', sizes: ['S', 'M', 'L', 'XL'], price: 185, img: 'https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?auto=format&fit=crop&w=800&q=80', desc: 'بدلة كحلية أنيقة للعمل والمناسبات.' },
+    { id: 3, name: 'بدلة رمادية عصرية بنقشة مربعات', cat: 'بدلات رسمية', sizes: ['M', 'L', 'XL'], price: 195, img: 'https://images.unsplash.com/photo-1598808503746-f34c53b9323e?auto=format&fit=crop&w=800&q=80', desc: 'قصّة حديثة تمنحك حضوراً راقياً في الاجتماعات.' },
+    { id: 4, name: 'بليزر كحلي رسمي بقصة عصرية', cat: 'بدلات رسمية', sizes: ['S', 'M', 'L', 'XL', 'XXL'], price: 135, img: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=80', desc: 'بليزر أنيق يسهل تنسيقه مع القمصان والبناطيل.' },
+    { id: 5, name: 'قميص أبيض ناصع من القطن المصري', cat: 'قمصان فاخرة', sizes: ['S', 'M', 'L', 'XL', 'XXL'], price: 42, img: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=800&q=80', desc: 'قميص أبيض ناعم ومريح للدوام والمناسبات.' },
+    { id: 6, name: 'قميص أكسفورد أزرق سماوي', cat: 'قمصان فاخرة', sizes: ['S', 'M', 'L', 'XL'], price: 38, img: 'https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=800&q=80', desc: 'قميص سماوي عملي وأنيق.' },
+    { id: 7, name: 'قميص كتان بيج صيفي راقٍ', cat: 'قمصان فاخرة', sizes: ['M', 'L', 'XL'], price: 45, img: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=800&q=80', desc: 'خامة خفيفة ومريحة للأجواء الدافئة والإطلالات الهادئة.' },
+    { id: 8, name: 'قميص أسود سادة بقصة Slim Fit', cat: 'قمصان فاخرة', sizes: ['S', 'M', 'L'], price: 40, img: 'https://images.unsplash.com/photo-1620012253295-c15cc3e65df4?auto=format&fit=crop&w=800&q=80', desc: 'إطلالة مسائية أنيقة مع قصة محددة مريحة.' },
+    { id: 9, name: 'بنطال تشينو كلاسيكي كحلي', cat: 'بناطيل رجالية', sizes: ['S', 'M', 'L', 'XL', 'XXL'], price: 44, img: 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=800&q=80', desc: 'بنطال تشينو مريح بقصة عصرية.' },
+    { id: 10, name: 'بنطال قماشي رمادي رسمي', cat: 'بناطيل رجالية', sizes: ['M', 'L', 'XL', 'XXL'], price: 52, img: 'https://images.unsplash.com/photo-1473966968600-fa801b869a1a?auto=format&fit=crop&w=800&q=80', desc: 'بنطال مناسب للبدلات والإطلالات المكتبية اليومية.' },
+    { id: 11, name: 'ساعة كلاسيكية رجالية جلد أسود', cat: 'إكسسوارات', sizes: ['S', 'M', 'L', 'XL', 'XXL'], price: 150, img: 'https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&w=800&q=80', desc: 'ساعة رجالية أنيقة بسوار جلدي.' },
+    { id: 12, name: 'ساعة كرونوغراف فضية فاخرة', cat: 'إكسسوارات', sizes: ['S', 'M', 'L', 'XL', 'XXL'], price: 175, img: 'https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?auto=format&fit=crop&w=800&q=80', desc: 'تصميم معدني متين يضيف لمسة فخامة لإطلالتك.' }
   ];
 
   class Store {
@@ -24,8 +32,108 @@
       this.cart = [];
       this.promo = null;
       this.method = 'كاش';
+      this.category = 'all';
+      this.size = null;
+      this.maxPrice = 350;
       try { this.cart = JSON.parse(localStorage.getItem('store_cart_v1') || '[]') || []; } catch (_) {}
       try { this.promo = JSON.parse(localStorage.getItem('store_promo_v1') || 'null'); } catch (_) {}
+    }
+
+    normalizeCat(cat) {
+      if (!cat || cat === 'all') return 'all';
+      if (CAT_MAP[cat]) return CAT_MAP[cat];
+      if (cat.includes('إكسسوارات')) return 'إكسسوارات';
+      return cat;
+    }
+
+    setCategory(cat) {
+      this.category = this.normalizeCat(cat);
+      this.syncFilterUI();
+      this.drawProducts();
+      this.drawCart();
+    }
+
+    setSize(sz) {
+      this.size = this.size === sz ? null : sz;
+      this.syncFilterUI();
+      this.drawProducts();
+      this.drawCart();
+    }
+
+    setMaxPrice(val) {
+      this.maxPrice = Number(val) || 350;
+      this.drawProducts();
+      this.drawCart();
+    }
+
+    resetFilters() {
+      this.category = 'all';
+      this.size = null;
+      this.maxPrice = 350;
+      const slider = document.getElementById('priceRangeSlider');
+      const label = document.getElementById('priceRangeVal');
+      if (slider) slider.value = '350';
+      if (label) label.textContent = 'حتى 350 د.أ';
+      this.syncFilterUI();
+      this.drawProducts();
+      this.drawCart();
+    }
+
+    syncFilterUI() {
+      document.querySelectorAll('.catalog-tab-btn').forEach(btn => {
+        const btnCat = this.normalizeCat(btn.getAttribute('data-cat'));
+        btn.classList.toggle('active', btnCat === this.category);
+      });
+
+      document.querySelectorAll('.filter-item[data-cat]').forEach(item => {
+        const itemCat = this.normalizeCat(item.getAttribute('data-cat'));
+        item.classList.toggle('active', itemCat === this.category);
+      });
+
+      document.querySelectorAll('.filter-size-chip[data-size]').forEach(chip => {
+        chip.classList.toggle('active', chip.getAttribute('data-size') === this.size);
+      });
+    }
+
+    getFilteredItems() {
+      return ITEMS.filter(p => {
+        const catMatch = this.category === 'all' || p.cat === this.category;
+        const sizeMatch = !this.size || (Array.isArray(p.sizes) && p.sizes.includes(this.size));
+        const priceMatch = Number(p.price) <= Number(this.maxPrice);
+        return catMatch && sizeMatch && priceMatch;
+      });
+    }
+
+    bindFiltersOnce() {
+      if (this._filtersBound) return;
+      this._filtersBound = true;
+
+      document.querySelectorAll('.catalog-tab-btn[data-cat], .filter-item[data-cat]').forEach(el => {
+        el.addEventListener('click', e => {
+          e.preventDefault();
+          this.setCategory(el.getAttribute('data-cat'));
+        });
+      });
+
+      document.querySelectorAll('.filter-size-chip[data-size]').forEach(chip => {
+        chip.addEventListener('click', e => {
+          e.preventDefault();
+          this.setSize(chip.getAttribute('data-size'));
+        });
+      });
+
+      const slider = document.getElementById('priceRangeSlider');
+      if (slider) {
+        slider.addEventListener('input', () => {
+          this.setMaxPrice(slider.value);
+        });
+      }
+
+      if (window.__pendingCategory) {
+        this.category = this.normalizeCat(window.__pendingCategory);
+        window.__pendingCategory = null;
+      }
+      this.syncFilterUI();
     }
 
     money(n) {
@@ -92,9 +200,7 @@
       const idsToHide = [
         'catalogSearchInput',
         'catalogResultsCount',
-        'catalogSortSelect',
-        'priceRangeSlider',
-        'priceRangeVal'
+        'catalogSortSelect'
       ];
       for (const id of idsToHide) {
         const el = document.getElementById(id);
@@ -103,23 +209,6 @@
 
       const toolbar = document.querySelector('#catalog .catalog-toolbar');
       if (toolbar) toolbar.remove();
-
-      const sidebar = document.querySelector('#catalog .catalog-sidebar');
-      if (sidebar) sidebar.remove();
-
-      const catalogLayout = document.querySelector('#catalog .catalog-layout');
-      if (catalogLayout) {
-        catalogLayout.style.setProperty('display', 'block', 'important');
-        catalogLayout.style.setProperty('grid-template-columns', '1fr', 'important');
-      }
-
-      const catalogMain = document.querySelector('#catalog .catalog-main');
-      if (catalogMain) {
-        catalogMain.style.setProperty('width', '100%', 'important');
-        catalogMain.style.setProperty('max-width', '100%', 'important');
-        catalogMain.style.setProperty('direction', 'rtl', 'important');
-        catalogMain.style.setProperty('text-align', 'right', 'important');
-      }
 
       const words = ['عرض المنتجات', 'الترتيب:', 'الترتيب', 'الأكثر طلباً', 'الأكثر طلبا', 'تقييماً', 'تقييما', 'ابحث باسم القطعة'];
       const els = Array.from(document.querySelectorAll('#catalog label, #catalog span, #catalog select, #catalog input, #catalog p'));
@@ -161,14 +250,28 @@
         wrap.id = 'liveProductsSection';
         wrap.style.cssText = 'direction:rtl; text-align:right;';
         wrap.innerHTML = `
-          <h2 style="margin:8px 0 14px; font-size:1.25rem; font-weight:900; color:#0f172a; text-align:right;">المنتجات المتوفرة</h2>
+          <h2 id="liveProductsTitle" style="margin:8px 0 14px; font-size:1.25rem; font-weight:900; color:#0f172a; text-align:right;">المنتجات المتوفرة</h2>
           <div id="liveProductsGrid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:16px; justify-content:start; align-items:stretch;"></div>
         `;
       }
       root.prepend(wrap);
 
+      const list = this.getFilteredItems();
+      const titleEl = document.getElementById('liveProductsTitle');
+      if (titleEl) {
+        const parts = ['المنتجات المتوفرة'];
+        if (this.category !== 'all') parts.push(this.category);
+        if (this.size) parts.push(`مقاس ${this.size}`);
+        titleEl.textContent = `${parts.join(' - ')} (${list.length})`;
+      }
+
       const grid = document.getElementById('liveProductsGrid');
-      grid.innerHTML = ITEMS.map(p => `
+      if (!list.length) {
+        grid.innerHTML = `<div style="grid-column:1/-1; background:#fff; border:1px solid #e2e8f0; border-radius:12px; padding:20px; text-align:center; color:#475569; font-weight:700;">لا توجد منتجات مطابقة للفلاتر الحالية.</div>`;
+        return;
+      }
+
+      grid.innerHTML = list.map(p => `
         <div style="background:#fff; border:1px solid #e2e8f0; border-radius:12px; padding:12px; display:flex; flex-direction:column; gap:8px; box-shadow:0 4px 14px rgba(15,23,42,0.05); text-align:right;">
           <img src="${p.img}" alt="${p.name}" style="width:100%; height:220px; object-fit:cover; border-radius:8px; background:#f8fafc;">
           <div style="font-size:0.78rem; color:#b45309; font-weight:800;">${p.cat}</div>
@@ -339,9 +442,11 @@
     }
 
     start() {
+      this.bindFiltersOnce();
       this.drawProducts();
       this.drawCart();
       setTimeout(() => {
+        this.bindFiltersOnce();
         this.ensureRoot();
         this.drawProducts();
         this.drawCart();
