@@ -87,8 +87,30 @@
       if (!root) {
         root = document.createElement('div');
         root.id = 'liveStoreApp';
-        root.style.cssText = 'max-width:1200px; margin:24px auto 40px; padding:0 14px; font-family:inherit; direction:rtl;';
-        document.body.appendChild(root);
+        root.style.cssText = 'max-width:1200px; margin:14px auto 40px; padding:0 14px; font-family:inherit; direction:rtl;';
+
+        const candidates = Array.from(document.body.querySelectorAll('section, div, main'));
+        let bestAnchor = null;
+
+        for (const el of candidates) {
+          if (el === document.body || el.id === 'liveStoreApp' || el.closest('#liveStoreApp')) continue;
+          const text = (el.innerText || el.textContent || '').trim();
+          const hasToolbar =
+            text.includes('عرض المنتجات') ||
+            text.includes('الأكثر طلباً') ||
+            text.includes('الأكثر طلبا') ||
+            text.includes('ابحث باسم القطعة');
+
+          if (hasToolbar && el.offsetHeight > 25 && el.offsetHeight < 500) {
+            bestAnchor = el;
+          }
+        }
+
+        if (bestAnchor && bestAnchor.parentNode) {
+          bestAnchor.parentNode.insertBefore(root, bestAnchor.nextSibling);
+        } else {
+          document.body.appendChild(root);
+        }
       }
       return root;
     }
