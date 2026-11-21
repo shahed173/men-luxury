@@ -1,167 +1,246 @@
-const FALLBACK_PRODUCTS = [
-    {
-      id: 1,
-      name: 'بدلة توكسيدو ملكية سوداء فاخرة',
-      slug: 'royal-black-tuxedo-suit',
-      category_slug: 'suits',
-      category_name: 'بدلات رسمية',
-      description: 'بدلة توكسيدو مصممة خصيصاً للمناسبات والاحتفالات الكبرى من صوف الميرينو الفاخر.',
-      price: 240.00,
-      original_price: 295.00,
-      sizes: ['48 (S)', '50 (M)', '52 (L)', '54 (XL)', '56 (XXL)'],
-      images: ['https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&w=800&q=80'],
-      is_featured: true,
-      is_bestseller: true,
-      reviews_count: 38
-    },
-    {
-      id: 2,
-      name: 'بدلة كلاسيكية زرقاء كحلية من الصوف الخالص',
-      slug: 'navy-blue-classic-wool-suit',
-      category_slug: 'suits',
-      category_name: 'بدلات رسمية',
-      description: 'بدلة عمل رسمية بلون كحلي داكن ملكي تجمع بين الراحة والأناقة.',
-      price: 185.00,
-      original_price: 225.00,
-      sizes: ['48 (S)', '50 (M)', '52 (L)', '54 (XL)'],
-      images: ['https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?auto=format&fit=crop&w=800&q=80'],
-      is_featured: true,
-      is_bestseller: true,
-      reviews_count: 24
-    },
-    {
-      id: 3,
-      name: 'بدلة رمادية عصرية ذات نقوش مربعات ناعمة',
-      slug: 'grey-plaid-tailored-suit',
-      category_slug: 'suits',
-      category_name: 'بدلات رسمية',
-      description: 'تصميم أوروبي عصري بنقشة مربعات دقيقة للمناسبات والاجتماعات.',
-      price: 195.00,
-      original_price: 240.00,
-      sizes: ['50 (M)', '52 (L)', '54 (XL)'],
-      images: ['https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=80'],
-      is_featured: false,
-      is_bestseller: false,
-      reviews_count: 15
-    },
-    {
-      id: 4,
-      name: 'قميص أبيض ناصع من القطن المصري الفاخر',
-      slug: 'egyptian-cotton-white-shirt',
-      category_slug: 'shirts',
-      category_name: 'قمصان فاخرة',
-      description: 'قميص أبيض كلاسيكي من قطن جيزة المصري طويل التيلة.',
-      price: 42.00,
-      original_price: 55.00,
-      sizes: ['S', 'M', 'L', 'XL', 'XXL'],
-      images: ['https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=800&q=80'],
-      is_featured: true,
-      is_bestseller: true,
-      reviews_count: 72
-    },
-    {
-      id: 5,
-      name: 'قميص أكسفورد أزرق سماوي كاجوال وأنيق',
-      slug: 'oxford-sky-blue-shirt',
-      category_slug: 'shirts',
-      category_name: 'قمصان فاخرة',
-      description: 'قميص أكسفورد منسوج بعناية للعمل والخروجات اليومية.',
-      price: 38.00,
-      original_price: 48.00,
-      sizes: ['S', 'M', 'L', 'XL'],
-      images: ['https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=800&q=80'],
-      is_featured: true,
-      is_bestseller: false,
-      reviews_count: 41
-    },
-    {
-      id: 6,
-      name: 'قميص كتان طبيعي بيج للصيف والإجازات',
-      slug: 'pure-linen-beige-summer-shirt',
-      category_slug: 'shirts',
-      category_name: 'قمصان فاخرة',
-      description: 'قميص صيفي من الكتان النقي خفيف ومريح.',
-      price: 45.00,
-      original_price: null,
-      sizes: ['M', 'L', 'XL'],
-      images: ['https://images.unsplash.com/photo-1607345366928-199ea26cfe3e?auto=format&fit=crop&w=800&q=80'],
-      is_featured: false,
-      is_bestseller: true,
-      reviews_count: 19
-    },
-    {
-      id: 7,
-      name: 'بنطال تشينو كلاسيكي كحلي بقصة مدببة',
-      slug: 'classic-navy-slim-chino',
-      category_slug: 'pants',
-      category_name: 'بناطيل رجالية',
-      description: 'بنطال تشينو قطني مريح لإطلالة عصرية أنيقة.',
-      price: 44.00,
-      original_price: 55.00,
-      sizes: ['30', '32', '34', '36', '38'],
-      images: ['https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=800&q=80'],
-      is_featured: true,
-      is_bestseller: true,
-      reviews_count: 53
-    },
-    {
-      id: 8,
-      name: 'بنطال رسمي صوف خفيف رمادي فحمي',
-      slug: 'charcoal-tailored-trousers-side-adjusters',
-      category_slug: 'pants',
-      category_name: 'بناطيل رجالية',
-      description: 'بنطال رسمي إيطالي الطراز بحزام تعديل جانبي.',
-      price: 65.00,
-      original_price: 80.00,
-      sizes: ['31', '32', '34', '36'],
-      images: ['https://images.unsplash.com/photo-1473966968600-fa801b869a1a?auto=format&fit=crop&w=800&q=80'],
-      is_featured: false,
-      is_bestseller: true,
-      reviews_count: 31
-    },
-    {
-      id: 9,
-      name: 'ساعة كلاسيكية رجالية بسوار جلد أسود',
-      slug: 'swiss-classic-leather-watch',
-      category_slug: 'accessories',
-      category_name: 'إكسسوارات وأحذية',
-      description: 'ساعة رجالية كلاسيكية أنيقة بلمسة فخامة عالية.',
-      price: 150.00,
-      original_price: 195.00,
-      sizes: ['قطر 40 ملم'],
-      images: ['https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&w=800&q=80'],
-      is_featured: true,
-      is_bestseller: true,
-      reviews_count: 48
-    },
-    {
-      id: 10,
-      name: 'حزام جلد طبيعي إيطالي بوجهين',
-      slug: 'reversible-italian-leather-belt',
-      category_slug: 'accessories',
-      category_name: 'إكسسوارات وأحذية',
-      description: 'حزام جلد طبيعي بوجهين أسود وبني داكن.',
-      price: 35.00,
-      original_price: 45.00,
-      sizes: ['90 سم', '95 سم', '100 سم', '105 سم'],
-      images: ['https://images.unsplash.com/photo-1624222247344-550fb60583dc?auto=format&fit=crop&w=800&q=80'],
-      is_featured: false,
-      is_bestseller: true,
-      reviews_count: 64
-    },
-    {
-      id: 11,
-      name: 'ساعة كرونوغراف رجالية فاخرة',
-      slug: 'mens-chronograph-luxury-watch',
-      category_slug: 'accessories',
-      category_name: 'إكسسوارات وأحذية',
-      description: 'إكسسوار رجالي أنيق يكمّل إطلالتك اليومية والرسمية.',
-      price: 120.00,
-      original_price: 150.00,
-      sizes: ['مقاس موحد'],
-      images: ['https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80'],
-      is_featured: true,
-      is_bestseller: false,
-      reviews_count: 27
-    }
-  ];
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>متجر إليجانس للأزياء الرجالية الفاخرة | ELEGANCE Men's Luxury Store - الأردن</title>
+  
+  <!-- FontAwesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- ================= Top Bar ================= -->
+  <div class="top-bar">
+    <div>
+      <i class="fa-solid fa-truck-fast"></i>
+      <span>شحن مجاني لكافة محافظات الأردن للطلبات فوق 50 د.أ | استخدم كود: </span>
+      <strong style="color:#fbbf24; letter-spacing:1px;">ELEGANCE20</strong>
+      <span> للحصول على خصم 20%</span>
+    </div>
+    <div style="display:flex; gap:16px; flex-wrap:wrap;">
+      <span><i class="fa-solid fa-shield-halved"></i> دفع إلكتروني آمن 100%</span>
+      <span>
+        <i class="fa-solid fa-phone"></i> خدمة العملاء:
+        <a href="tel:+962797260229" dir="ltr" style="color:inherit; text-decoration:none; font-weight:700;">+962 7 9726 0229</a>
+      </span>
+    </div>
+  </div>
+
+  <!-- ================= Header / Navbar ================= -->
+  <header class="header">
+    <nav class="navbar">
+      <!-- Brand Logo -->
+      <a href="#home" class="brand-logo">
+        <div class="brand-icon">
+          <i class="fa-solid fa-crown"></i>
+        </div>
+        <div class="brand-name">
+          <span>ELEGANCE</span>
+          <span class="sub">خياطة وأزياء رجالية فاخرة</span>
+        </div>
+      </a>
+
+      <!-- Navigation Links -->
+      <ul class="nav-links">
+        <li><a href="#home" class="nav-link active">الرئيسية</a></li>
+        <li><a href="#catalog" class="nav-link" onclick="event.preventDefault(); window.app && typeof window.app.setCategory === 'function' ? window.app.setCategory('all') : (window.__pendingCategory = 'all'); document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' });">التشكيلة الكاملة</a></li>
+        <li><a href="#catalog" class="nav-link" onclick="event.preventDefault(); window.app && typeof window.app.setCategory === 'function' ? window.app.setCategory('suits') : (window.__pendingCategory = 'suits'); document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' });">بدلات رسمية</a></li>
+        <li><a href="#catalog" class="nav-link" onclick="event.preventDefault(); window.app && typeof window.app.setCategory === 'function' ? window.app.setCategory('shirts') : (window.__pendingCategory = 'shirts'); document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' });">قمصان فاخرة</a></li>
+        <li><a href="#catalog" class="nav-link" onclick="event.preventDefault(); window.app && typeof window.app.setCategory === 'function' ? window.app.setCategory('pants') : (window.__pendingCategory = 'pants'); document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' });">بناطيل</a></li>
+        <li><a href="#catalog" class="nav-link" onclick="event.preventDefault(); window.app && typeof window.app.setCategory === 'function' ? window.app.setCategory('accessories') : (window.__pendingCategory = 'accessories'); document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' });">إكسسوارات</a></li>
+      </ul>
+
+      <!-- Navbar Action Buttons -->
+      <div class="nav-actions">
+        <!-- Quick Search -->
+        <button class="icon-btn" title="البحث في المنتجات" onclick="document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' }); document.getElementById('catalogSearchInput')?.focus();">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+
+        <!-- Wishlist -->
+        <button class="icon-btn" title="قائمة الرغبات" onclick="window.app && typeof window.app.showToast === 'function' ? window.app.showToast('قائمتك المفضلة تحتوي على ' + (window.app.wishlist?.length || 0) + ' عناصر') : null;">
+          <i class="fa-regular fa-heart"></i>
+          <span class="badge-count wishlist-badge-count" style="display:none;">0</span>
+        </button>
+
+        <!-- User Profile / Login -->
+        <button id="userBtn" class="icon-btn" title="حسابي" onclick="window.app && typeof window.app.openAuthModal === 'function' ? window.app.openAuthModal() : null;">
+          <i class="fa-regular fa-user"></i>
+        </button>
+
+        <!-- Cart Button -->
+        <button id="openCartBtn" class="icon-btn" title="سلة التسوق" style="background:#0f172a; color:#fff;">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span class="badge-count cart-badge-count" style="display:none;">0</span>
+        </button>
+
+        <!-- Mobile Toggle -->
+        <button class="icon-btn hamburger-btn" onclick="document.querySelector('.nav-links')?.classList.toggle('active')">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ================= Hero Section ================= -->
+  <section id="home" class="hero">
+    <div class="hero-container">
+      <div class="hero-text">
+        <div class="hero-badge">
+          <i class="fa-solid fa-sparkles"></i> تشكيلة خريف وشتاء 2026 الحصرية
+        </div>
+        <h1 class="hero-title">
+          فخامة الحضور، وبراعة <br /><span class="highlight">التفصيل الإيطالي</span>
+        </h1>
+        <p class="hero-desc">
+          صُممت قطعنا بعناية فائقة لتمنحك إطلالة مهيبة تجمع بين أصالة الصوف الإنجليزي ونعومة القطن المصري بنسبة 100%. أزياء تصنع الفارق في كل اجتماع ومناسبة.
+        </p>
+        <div class="hero-actions">
+          <a href="#catalog" class="btn btn-primary">
+            <i class="fa-solid fa-bag-shopping"></i> تسوق التشكيلة الجديدة
+          </a>
+          <button class="btn btn-secondary" onclick="window.app && typeof window.app.setCategory === 'function' ? window.app.setCategory('suits') : (window.__pendingCategory = 'suits'); document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' });">
+            <i class="fa-solid fa-user-tie"></i> استكشف البدلات الملكية
+          </button>
+        </div>
+      </div>
+
+      <div class="hero-image-wrapper">
+        <div class="hero-img-card">
+          <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=1000&q=80" alt="بدلات رجالية فاخرة" />
+        </div>
+        <div class="hero-floating-card">
+          <div class="floating-icon">
+            <i class="fa-solid fa-award"></i>
+          </div>
+          <div class="floating-text">
+            <h4>ضمان جودة الأقمشة 100%</h4>
+            <p>صوف ميرينو طبيعي وتفصيل يدوي متقن</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Features Strip ================= -->
+  <div class="features-strip">
+    <div class="features-grid">
+      <div class="feature-box">
+        <div class="feature-icon-circle">
+          <i class="fa-solid fa-truck-fast"></i>
+        </div>
+        <div class="feature-content">
+          <h4>شحن سريع ومجاني</h4>
+          <p>توصيل آمن لباب منزلك في الأردن خلال 24 - 48 ساعة</p>
+        </div>
+      </div>
+
+      <div class="feature-box">
+        <div class="feature-icon-circle">
+          <i class="fa-solid fa-credit-card"></i>
+        </div>
+        <div class="feature-content">
+          <h4>دفع مرن وآمن</h4>
+          <p>فيزا، ماستركارد، أبل باي أو الدفع عند الاستلام</p>
+        </div>
+      </div>
+
+      <div class="feature-box">
+        <div class="feature-icon-circle">
+          <i class="fa-solid fa-arrow-rotate-left"></i>
+        </div>
+        <div class="feature-content">
+          <h4>استبدال واسترجاع سهل</h4>
+          <p>إرجاع مجاني وسلس خلال 14 يوماً من الاستلام</p>
+        </div>
+      </div>
+
+      <div class="feature-box">
+        <div class="feature-icon-circle">
+          <i class="fa-solid fa-scissors"></i>
+        </div>
+        <div class="feature-content">
+          <h4>قصّات قياسية وتفصيل</h4>
+          <p>مقاسات دقيقة مطابقة لأرقى المعايير العالمية</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= Categories Showcase ================= -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-subtitle">الفئات والتصنيفات</div>
+      <h2 class="section-title">تسوق حسب فئة الأزياء</h2>
+      <p class="section-desc">اختر من بين مجموعاتنا المختارة بعناية لأناقة متكاملة من الرأس حتى أخمص القدمين.</p>
+    </div>
+
+    <div class="categories-grid">
+      <!-- 1. Suits -->
+      <div class="category-card" onclick="window.app && typeof window.app.setCategory === 'function' ? window.app.setCategory('suits') : (window.__pendingCategory = 'suits'); document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' });">
+        <img src="https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&w=800&q=80" alt="بدلات رسمية" />
+        <div class="category-overlay">
+          <h3>بدلات رسمية وتوكسيدو</h3>
+          <p>قصّات إيطالية للمناسبات والاجتماعات الرفيعة</p>
+        </div>
+      </div>
+
+      <!-- 2. Shirts -->
+      <div class="category-card" onclick="window.app && typeof window.app.setCategory === 'function' ? window.app.setCategory('shirts') : (window.__pendingCategory = 'shirts'); document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' });">
+        <img src="https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=800&q=80" alt="قمصان فاخرة" />
+        <div class="category-overlay">
+          <h3>قمصان كلاسيكية وكاجوال</h3>
+          <p>منسوجة من القطن المصري بنسبة 100% المقاوم للتجعد</p>
+        </div>
+      </div>
+
+      <!-- 3. Pants -->
+      <div class="category-card" onclick="window.app && typeof window.app.setCategory === 'function' ? window.app.setCategory('pants') : (window.__pendingCategory = 'pants'); document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' });">
+        <img src="https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=800&q=80" alt="بناطيل رجالية" />
+        <div class="category-overlay">
+          <h3>بناطيل شينو ورسمية</h3>
+          <p>أقمشة صوف وقطن متينة بحزام تعديل جانبي أنيق</p>
+        </div>
+      </div>
+
+      <!-- 4. Accessories -->
+      <div class="category-card" onclick="window.app && typeof window.app.setCategory === 'function' ? window.app.setCategory('accessories') : (window.__pendingCategory = 'accessories'); document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' });">
+        <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=800&q=80" alt="إكسسوارات رجالية" />
+        <div class="category-overlay">
+          <h3>إكسسوارات وأحزمة وساعات</h3>
+          <p>تفاصيل تصنع الفارق وتكمل هيبة مظهرك</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Featured & Best Sellers Section ================= -->
+  <section class="section" style="background:#ffffff; border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
+    <div class="section-header">
+      <div class="section-subtitle">المختارات الفاخرة</div>
+      <h2 class="section-title">الأكثر طلباً وتفضيلاً</h2>
+      <p class="section-desc">قطع نالت ثقة عملائنا وحققت أعلى التقييمات لجودتها ودقة تفصيلها.</p>
+    </div>
+
+    <!-- Featured Products Container -->
+    <div id="homeFeaturedProducts" class="products-grid">
+      <!-- Populated Dynamically via app.js -->
+    </div>
+  </section>
+
+  <!-- ================= Promotional Banner ================= -->
+  <section class="section" style="padding-top:20px; padding-bottom:20px;">
+    <div class="promo-banner">
+      <div class="promo-content">
+        <div style="color:#fbbf24; font-weight:800; font-size:0.9rem; margin-bottom:8px;">عرض حصري لفترة محدودة</div>
+        <h2>وفر 20% على إجمالي طلبك اليوم</h2>
+        <p>استمتع بتجربة تسوق راقية واحصل على خصم فوري 20% عند استخدام رمز الكوبون أثناء إتمام عملية الشراء.</p>
+        
+        <div class="promo-code-box">
+          <span>كود الخصم:</span>
+          <span class="code">ELEGANCE20</span>
+          <button class
