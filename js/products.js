@@ -110,4 +110,12 @@ const initialFallbackProducts = [
     sizes: ['S', 'M', 'L', 'XL'],
     colors: ['#93c5fd', '#bfdbfe', '#ffffff'],
     images: [
-      '
+      'https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=900&q=80'
+    ],
+    is_featured: true,
+    is_bestseller: false,
+    rating: 4.8,
+    reviews_count: 41
+  }
+];
