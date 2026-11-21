@@ -1,6 +1,5 @@
 /**
- * متجر الأزياء الرجالية الفاخر - Application Core (الأردن - د.أ)
- * حل متكامل لمنع أخطاء currentFilter وضمان تصفية وعرض المنتجات في الكتالوج
+ * متجر إليجانس للأزياء الرجالية الفاخرة - Application Core (الأردن - د.أ)
  */
 
 (function () {
@@ -19,7 +18,7 @@
       price: 240.00,
       original_price: 295.00,
       sizes: ['48 (S)', '50 (M)', '52 (L)', '54 (XL)', '56 (XXL)'],
-      images: ['https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&w=900&q=80'],
+      images: ['https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&w=800&q=80'],
       is_featured: true,
       is_bestseller: true,
       reviews_count: 38
@@ -34,7 +33,7 @@
       price: 185.00,
       original_price: 225.00,
       sizes: ['48 (S)', '50 (M)', '52 (L)', '54 (XL)'],
-      images: ['https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?auto=format&fit=crop&w=900&q=80'],
+      images: ['https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?auto=format&fit=crop&w=800&q=80'],
       is_featured: true,
       is_bestseller: true,
       reviews_count: 24
@@ -49,7 +48,7 @@
       price: 195.00,
       original_price: 240.00,
       sizes: ['50 (M)', '52 (L)', '54 (XL)'],
-      images: ['https://images.unsplash.com/photo-1598808503746-f34c53b9323e?auto=format&fit=crop&w=900&q=80'],
+      images: ['https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=80'],
       is_featured: false,
       is_bestseller: false,
       reviews_count: 15
@@ -64,7 +63,7 @@
       price: 42.00,
       original_price: 55.00,
       sizes: ['S', 'M', 'L', 'XL', 'XXL'],
-      images: ['https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=900&q=80'],
+      images: ['https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=800&q=80'],
       is_featured: true,
       is_bestseller: true,
       reviews_count: 72
@@ -79,7 +78,7 @@
       price: 38.00,
       original_price: 48.00,
       sizes: ['S', 'M', 'L', 'XL'],
-      images: ['https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=900&q=80'],
+      images: ['https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=800&q=80'],
       is_featured: true,
       is_bestseller: false,
       reviews_count: 41
@@ -94,7 +93,7 @@
       price: 45.00,
       original_price: null,
       sizes: ['M', 'L', 'XL'],
-      images: ['https://images.unsplash.com/photo-1607345366928-199ea26cfe3e?auto=format&fit=crop&w=900&q=80'],
+      images: ['https://images.unsplash.com/photo-1607345366928-199ea26cfe3e?auto=format&fit=crop&w=800&q=80'],
       is_featured: false,
       is_bestseller: true,
       reviews_count: 19
@@ -109,7 +108,7 @@
       price: 44.00,
       original_price: 55.00,
       sizes: ['30', '32', '34', '36', '38'],
-      images: ['https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=900&q=80'],
+      images: ['https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=800&q=80'],
       is_featured: true,
       is_bestseller: true,
       reviews_count: 53
@@ -124,22 +123,22 @@
       price: 65.00,
       original_price: 80.00,
       sizes: ['31', '32', '34', '36'],
-      images: ['https://images.unsplash.com/photo-1473966968600-fa801b869a1a?auto=format&fit=crop&w=900&q=80'],
+      images: ['https://images.unsplash.com/photo-1473966968600-fa801b869a1a?auto=format&fit=crop&w=800&q=80'],
       is_featured: false,
       is_bestseller: true,
       reviews_count: 31
     },
     {
       id: 9,
-      name: 'ساعة كلاسيكية سويسرية بسوار جلد أسود',
+      name: 'ساعة كلاسيكية رجالية بسوار جلد أسود',
       slug: 'swiss-classic-leather-watch',
       category_slug: 'accessories',
       category_name: 'إكسسوارات وأحذية',
-      description: 'ساعة كلاسيكية أنيقة بلمسة فخامة عالية.',
+      description: 'ساعة رجالية كلاسيكية أنيقة بلمسة فخامة عالية.',
       price: 150.00,
       original_price: 195.00,
       sizes: ['قطر 40 ملم'],
-      images: ['https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=900&q=80'],
+      images: ['https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&w=800&q=80'],
       is_featured: true,
       is_bestseller: true,
       reviews_count: 48
@@ -154,22 +153,22 @@
       price: 35.00,
       original_price: 45.00,
       sizes: ['90 سم', '95 سم', '100 سم', '105 سم'],
-      images: ['https://images.unsplash.com/photo-1624222247344-550fb60583dc?auto=format&fit=crop&w=900&q=80'],
+      images: ['https://images.unsplash.com/photo-1624222247344-550fb60583dc?auto=format&fit=crop&w=800&q=80'],
       is_featured: false,
       is_bestseller: true,
       reviews_count: 64
     },
     {
       id: 11,
-      name: 'أزرار أكمام ملكية مطلية بذهب مع حجر أونيكس',
-      slug: 'gold-plated-onyx-cufflinks',
+      name: 'ساعة كرونوغراف رجالية فاخرة',
+      slug: 'mens-chronograph-luxury-watch',
       category_slug: 'accessories',
       category_name: 'إكسسوارات وأحذية',
-      description: 'أزرار أكمام فاخرة مرصعة بحجر أونيكس أسود.',
-      price: 28.00,
-      original_price: 38.00,
+      description: 'إكسسوار رجالي أنيق يكمّل إطلالتك اليومية والرسمية.',
+      price: 120.00,
+      original_price: 150.00,
       sizes: ['مقاس موحد'],
-      images: ['https://images.unsplash.com/photo-1590736969955-71cc94801759?auto=format&fit=crop&w=900&q=80'],
+      images: ['https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80'],
       is_featured: true,
       is_bestseller: false,
       reviews_count: 27
@@ -270,8 +269,8 @@
     setMaxPrice(val) {
       const n = Number(val);
       this.currentFilter.maxPrice = Number.isFinite(n) && n >= 0 ? n : 500;
-      const lbl = document.getElementById('maxPriceValue') || document.getElementById('priceRangeValue');
-      if (lbl) lbl.textContent = this.formatPrice(this.currentFilter.maxPrice);
+      const lbl = document.getElementById('maxPriceValue') || document.getElementById('priceRangeVal');
+      if (lbl) lbl.textContent = `حتى ${Math.round(this.currentFilter.maxPrice)} ${this.currency}`;
       this.renderCatalog();
     }
 
@@ -295,8 +294,8 @@
 
     syncActiveButtons() {
       const active = this.currentFilter.category;
-      document.querySelectorAll('[data-category], .catalog-tab-btn, .filter-item').forEach(el => {
-        const raw = el.getAttribute('data-category') || el.dataset.category || el.textContent || '';
+      document.querySelectorAll('[data-category], [data-cat], .catalog-tab-btn, .filter-item').forEach(el => {
+        const raw = el.getAttribute('data-category') || el.getAttribute('data-cat') || el.textContent || '';
         el.classList.toggle('active', normalizeCategory(raw) === active);
       });
     }
@@ -343,14 +342,15 @@
       const subtotal = this.cart.reduce((s, i) => s + (Number(i.price) || 0) * (Number(i.quantity) || 1), 0);
       const shipping = subtotal === 0 || subtotal >= this.freeShippingThreshold ? 0 : this.shippingFee;
 
-      document.querySelectorAll('.cart-count, #cartCount').forEach(el => {
+      document.querySelectorAll('.cart-count, #cartCount, .cart-badge-count').forEach(el => {
         el.textContent = String(count);
+        if (count > 0) el.style.display = '';
       });
-      const subEl = document.getElementById('cartSubtotal');
+      const subEl = document.getElementById('cartSubtotal') || document.getElementById('drawerSubtotal');
       if (subEl) subEl.textContent = this.formatPrice(subtotal);
-      const shipEl = document.getElementById('cartShipping');
+      const shipEl = document.getElementById('cartShipping') || document.getElementById('drawerShipping');
       if (shipEl) shipEl.textContent = shipping === 0 && subtotal > 0 ? 'مجاني' : this.formatPrice(shipping);
-      const totEl = document.getElementById('cartTotal');
+      const totEl = document.getElementById('cartTotal') || document.getElementById('drawerTotal');
       if (totEl) totEl.textContent = this.formatPrice(subtotal + shipping);
     }
 
@@ -360,7 +360,7 @@
       if (idx > -1) this.wishlist.splice(idx, 1);
       else this.wishlist.push(numId);
       this.saveStorage();
-      document.querySelectorAll('.wishlist-count, #wishlistCount').forEach(el => {
+      document.querySelectorAll('.wishlist-count, #wishlistCount, .wishlist-badge-count').forEach(el => {
         el.textContent = String(this.wishlist.length);
       });
       this.renderCatalog();
@@ -376,8 +376,8 @@
 
       return `
         <div class="product-card" data-id="${product.id}" data-category="${product.category_slug || ''}">
-          <div class="product-image-wrap">
-            <img src="${img}" alt="${product.name}" loading="lazy">
+          <div class="product-image-wrap" style="height:260px; overflow:hidden; border-radius:10px; background:#f8fafc;">
+            <img src="${img}" alt="${product.name}" loading="lazy" style="width:100%; height:100%; object-fit:cover; object-position:center; display:block;">
             <button type="button" class="btn-wishlist ${wished ? 'active' : ''}" onclick="window.app.toggleWishlist(${product.id})" aria-label="المفضلة">
               <i class="${wished ? 'fa-solid' : 'fa-regular'} fa-heart"></i>
             </button>
@@ -411,6 +411,8 @@
       const grid = document.getElementById('catalogProductsGrid');
       if (!grid) return;
       const list = this.getFilteredProducts();
+      const countEl = document.getElementById('catalogResultsCount');
+      if (countEl) countEl.textContent = `عرض ${list.length} منتج`;
       if (!list.length) {
         grid.innerHTML = '<p class="empty-catalog-msg">لا توجد منتجات مطابقة للفئة المختارة حالياً.</p>';
         return;
@@ -425,7 +427,7 @@
         search.addEventListener('input', e => this.setSearch(e.target.value));
       }
 
-      const range = document.getElementById('maxPriceRange') || document.getElementById('priceRange');
+      const range = document.getElementById('maxPriceRange') || document.getElementById('priceRangeSlider');
       if (range && !range.dataset.bound) {
         range.dataset.bound = '1';
         range.addEventListener('input', e => this.setMaxPrice(e.target.value));
@@ -440,9 +442,9 @@
       if (!document.body.dataset.catBound) {
         document.body.dataset.catBound = '1';
         document.addEventListener('click', e => {
-          const btn = e.target.closest('[data-category], .catalog-tab-btn, .filter-item');
+          const btn = e.target.closest('[data-category], [data-cat], .catalog-tab-btn, .filter-item');
           if (!btn) return;
-          const val = btn.getAttribute('data-category') || btn.dataset.category || btn.textContent;
+          const val = btn.getAttribute('data-category') || btn.getAttribute('data-cat') || btn.textContent;
           if (val) {
             e.preventDefault();
             this.setCategory(val);
@@ -471,7 +473,6 @@
     }
   }
 
-  // تهيئة فورية لمنع أي خطأ undefined على currentFilter
   const instance = new LuxuryApp();
   window.app = instance;
   window.luxuryApp = instance;
