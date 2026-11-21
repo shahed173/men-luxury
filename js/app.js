@@ -200,6 +200,7 @@
       this.wishlist = [];
       this.appliedPromo = null;
       this.paymentMethod = 'كاش (الدفع عند الاستلام)';
+      this.selectedSizeByProduct = {};
       this.currentFilter = {
         category: 'all',
         search: '',
@@ -295,87 +296,21 @@
 
     formatPrice(val) {
       const n = Number(val);
-      return `${(Number.isFinite(n) ? n : 0).toFixed(2)} ${this.currency}`;
+      return `${(Number.isFinite(n) ? n : 0).toFixed(2)} ${this.currency}`; }  setCategory(category) { this.currentFilter.category = normalizeCategory(category); this.syncActiveButtons(); this.renderCatalog(); }  setSearch(q) { this.currentFilter.search = String(q \vert{}\vert{} ''); this.renderCatalog(); }  setMaxPrice(val) { const n = Number(val); this.currentFilter.maxPrice = Number.isFinite(n) && n >= 0 ? n : 500; const lbl = document.getElementById('maxPriceValue') \vert{}\vert{} document.getElementById('priceRangeVal'); if (lbl) lbl.textContent = `حتى ${Math.round(this.currentFilter.maxPrice)} ${this.currency}`; this.renderCatalog(); }  setSort(val) { this.currentFilter.sort = val \vert{}\vert{} 'popular'; this.renderCatalog(); }  resetFilters() { this.currentFilter = { category: 'all', search: '', minPrice: 0, maxPrice: 500, sort: 'popular', size: null }; this.syncActiveButtons(); this.renderCatalog(); }  syncActiveButtons() { const active = this.currentFilter.category; document.querySelectorAll('[data-category], [data-cat], .catalog-tab-btn, .filter-item').forEach(el => { const raw = el.getAttribute('data-category') \vert{}\vert{} el.getAttribute('data-cat') \vert{}\vert{} el.textContent \vert{}\vert{} ''; el.classList.toggle('active', normalizeCategory(raw) === active); }); }  loadStorage() { try { const c = JSON.parse(localStorage.getItem('elegance_cart') \vert{}\vert{} '[]'); if (Array.isArray(c)) this.cart = c; } catch (_) {} try { const w = JSON.parse(localStorage.getItem('elegance_wishlist') \vert{}\vert{} '[]'); if (Array.isArray(w)) this.wishlist = w; } catch (_) {} try { const promo = JSON.parse(localStorage.getItem('elegance_promo') \vert{}\vert{} 'null'); if (promo && promo.code && promo.rate) this.appliedPromo = promo; } catch (_) {} }  saveStorage() { try { localStorage.setItem('elegance_cart', JSON.stringify(this.cart)); localStorage.setItem('elegance_wishlist', JSON.stringify(this.wishlist)); localStorage.setItem('elegance_promo', JSON.stringify(this.appliedPromo)); } catch (_) {} }  quickAdd(productId, selectedSize = null) { const product = this.getProductsList().find(p => Number(p.id) === Number(productId)); if (!product) return; const size = selectedSize \vert{}\vert{} this.selectedSizeByProduct[product.id] \vert{}\vert{} (Array.isArray(product.sizes) && product.sizes[0]) \vert{}\vert{} ''; const existing = this.cart.find(i => Number(i.id) === Number(product.id) && String(i.size \vert{}\vert{} '') === String(size)); if (existing) { existing.quantity = (Number(existing.quantity) \vert{}\vert{} 1) + 1; } else { this.cart.push({ id: product.id, name: product.name, size, price: Number(product.price) \vert{}\vert{} 0, image: Array.isArray(product.images) ? product.images[0] : '', quantity: 1 }); } this.saveStorage(); this.updateCartUI(); this.showToast(`تمت إضافة "${product.name}" إلى السلة`);
     }
 
-    setCategory(category) {
-      this.currentFilter.category = normalizeCategory(category);
-      this.syncActiveButtons();
-      this.renderCatalog();
-    }
-
-    setSearch(q) {
-      this.currentFilter.search = String(q || '');
-      this.renderCatalog();
-    }
-
-    setMaxPrice(val) {
-      const n = Number(val);
-      this.currentFilter.maxPrice = Number.isFinite(n) && n >= 0 ? n : 500;
-      const lbl = document.getElementById('maxPriceValue') || document.getElementById('priceRangeVal');
-      if (lbl) lbl.textContent = `حتى ${Math.round(this.currentFilter.maxPrice)}${this.currency}`;
-      this.renderCatalog();
-    }
-
-    setSort(val) {
-      this.currentFilter.sort = val || 'popular';
-      this.renderCatalog();
-    }
-
-    resetFilters() {
-      this.currentFilter = {
-        category: 'all',
-        search: '',
-        minPrice: 0,
-        maxPrice: 500,
-        sort: 'popular',
-        size: null
-      };
-      this.syncActiveButtons();
-      this.renderCatalog();
-    }
-
-    syncActiveButtons() {
-      const active = this.currentFilter.category;
-      document.querySelectorAll('[data-category], [data-cat], .catalog-tab-btn, .filter-item').forEach(el => {
-        const raw = el.getAttribute('data-category') || el.getAttribute('data-cat') || el.textContent || '';
-        el.classList.toggle('active', normalizeCategory(raw) === active);
-      });
-    }
-
-    loadStorage() {
-      try {
-        const c = JSON.parse(localStorage.getItem('elegance_cart') || '[]');
-        if (Array.isArray(c)) this.cart = c;
-      } catch (_) {}
-      try {
-        const w = JSON.parse(localStorage.getItem('elegance_wishlist') || '[]');
-        if (Array.isArray(w)) this.wishlist = w;
-      } catch (_) {}
-      try {
-        const promo = JSON.parse(localStorage.getItem('elegance_promo') || 'null');
-        if (promo && promo.code && promo.rate) this.appliedPromo = promo;
-      } catch (_) {}
-    }
-
-    saveStorage() {
-      try {
-        localStorage.setItem('elegance_cart', JSON.stringify(this.cart));
-        localStorage.setItem('elegance_wishlist', JSON.stringify(this.wishlist));
-        localStorage.setItem('elegance_promo', JSON.stringify(this.appliedPromo));
-      } catch (_) {}
-    }
-
-    quickAdd(productId) {
+    buyNowProduct(productId, selectedSize = null) {
       const product = this.getProductsList().find(p => Number(p.id) === Number(productId));
       if (!product) return;
-      const existing = this.cart.find(i => Number(i.id) === Number(product.id));
+      const size = selectedSize || this.selectedSizeByProduct[product.id] || (Array.isArray(product.sizes) && product.sizes[0]) || '';
+      const existing = this.cart.find(i => Number(i.id) === Number(product.id) && String(i.size || '') === String(size));
       if (existing) {
         existing.quantity = (Number(existing.quantity) || 1) + 1;
       } else {
         this.cart.push({
           id: product.id,
           name: product.name,
+          size,
           price: Number(product.price) || 0,
           image: Array.isArray(product.images) ? product.images[0] : '',
           quantity: 1
@@ -383,41 +318,41 @@
       }
       this.saveStorage();
       this.updateCartUI();
-      this.showToast(`تمت إضافة "${product.name}" إلى السلة`); }  changeCartQty(index, delta) { const item = this.cart[index]; if (!item) return; const nextQty = (Number(item.quantity) \vert{}\vert{} 1) + Number(delta); if (nextQty <= 0) { this.cart.splice(index, 1); } else { item.quantity = nextQty; } this.saveStorage(); this.updateCartUI(); }  removeCartItem(index) { if (index < 0 \vert{}\vert{} index >= this.cart.length) return; this.cart.splice(index, 1); this.saveStorage(); this.updateCartUI(); this.showToast('تم حذف المنتج من السلة'); }  applyPromoCode(rawCode) { const code = String(rawCode \vert{}\vert{} '').trim().toUpperCase(); const input = document.getElementById('couponCodeInput') \vert{}\vert{} document.getElementById('promoCodeInput'); if (!code) { this.showToast('يرجى إدخال كود الخصم أولاً', true); return; } if (!Object.prototype.hasOwnProperty.call(PROMO_CODES, code)) { this.showToast('كود الخصم غير صحيح (جرّبي ELEGANCE20)', true); return; } this.appliedPromo = { code, rate: PROMO_CODES[code] }; if (input) input.value = code; this.saveStorage(); this.updateCartUI(); this.showToast(`تم تطبيق كود الخصم ${code} بنجاح!`);
+      this.closeModal('quickViewModal');
+      this.openCheckoutModal();
     }
 
-    getCartTotals() {
-      const count = this.cart.reduce((s, i) => s + (Number(i.quantity) || 1), 0);
-      const subtotal = this.cart.reduce((s, i) => s + (Number(i.price) || 0) * (Number(i.quantity) || 1), 0);
-      const discountRate = this.appliedPromo ? Number(this.appliedPromo.rate) || 0 : 0;
-      const discount = subtotal * discountRate;
-      const discountedSubtotal = Math.max(0, subtotal - discount);
-      const shipping = subtotal === 0 || discountedSubtotal >= this.freeShippingThreshold ? 0 : this.shippingFee;
-      const total = discountedSubtotal + shipping;
-      return { count, subtotal, discount, shipping, total };
-    }
+    openProductDetails(productId) {
+      const product = this.getProductsList().find(p => Number(p.id) === Number(productId));
+      if (!product) return;
 
-    renderCartItems() {
-      const container = document.getElementById('drawerCartItems') || document.getElementById('cartItemsContainer');
-      if (!container) return;
-
-      if (!this.cart.length) {
-        container.innerHTML = `
-          <div style="text-align:center; padding:40px 16px; color:#64748b;">
-            <i class="fa-solid fa-bag-shopping" style="font-size:2.4rem; margin-bottom:12px; opacity:0.45;"></i>
-            <p style="font-weight:700; margin-bottom:6px;">السلة فارغة حالياً</p>
-            <p style="font-size:0.86rem;">أضيفي المنتجات التي تعجبك لتظهر هنا وتتمكني من إتمام الطلب.</p>
-          </div>
-        `;
-        return;
+      let modal = document.getElementById('quickViewModal');
+      if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'quickViewModal';
+        document.body.appendChild(modal);
       }
 
-      container.innerHTML = this.cart.map((item, idx) => {
-        const qty = Number(item.quantity) || 1;
-        const unitPrice = Number(item.price) || 0;
-        const lineTotal = unitPrice * qty;
-        return `
-          <div style="display:flex; gap:12px; align-items:center; padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff; margin-bottom:10px;">
-            <img src="${item.image \vert{}\vert{} ''}" alt="${item.name}" style="width:64px; height:76px; object-fit:cover; border-radius:8px; flex-shrink:0; background:#f8fafc;" />
-            <div style="flex:1; min-width:0;">
-              <div style="font-weight:800; font-size:0.9
+      modal.style.cssText = [
+        'position:fixed',
+        'inset:0',
+        'background:rgba(15,23,42,0.65)',
+        'display:flex',
+        'align-items:center',
+        'justify-content:center',
+        'padding:16px',
+        'z-index:9998'
+      ].join(';');
+
+      const sizes = Array.isArray(product.sizes) && product.sizes.length ? product.sizes : ['مقاس موحد'];
+      const chosenSize = this.selectedSizeByProduct[product.id] || sizes[0];
+      this.selectedSizeByProduct[product.id] = chosenSize;
+      const img = Array.isArray(product.images) && product.images.length ? product.images[0] : '';
+
+      modal.innerHTML = `
+        <div style="background:#fff; width:100%; max-width:680px; max-height:92vh; overflow-y:auto; border-radius:16px; padding:24px; box-shadow:0 24px 60px rgba(0,0,0,0.35); position:relative;">
+          <button type="button" id="closeProductDetailsBtn" aria-label="إغلاق" style="position:absolute; top:16px; left:16px; width:34px; height:34px; border-radius:50%; border:1px solid #e2e8f0; background:#f8fafc; font-size:1.1rem; cursor:pointer;">✕</button>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:20px; align-items:start;">
+            <img src="${img}" alt="${product.name}" style="width:100%; height:290px; object-fit:cover; border-radius:12px; background:#f8fafc;" />
+            <div>
+              <span style="display:inline-block; font-size:0.8rem; font-weight:800; color:#b45309; background:#fef3c7; padding:4px 1
