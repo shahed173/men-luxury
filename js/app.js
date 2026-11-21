@@ -1,358 +1,185 @@
 /**
- * متجر إليجانس للأزياء الرجالية الفاخرة - Application Core (الأردن - د.أ)
+ * متجر إليجانس للأزياء الرجالية الفاخرة - نسخة نظيفة ومباشرة
  */
-
 (function () {
   const CURRENCY = 'د.أ';
-  const FREE_SHIPPING_THRESHOLD = 50.00;
-  const SHIPPING_FEE = 5.00;
+  const FREE_SHIPPING_THRESHOLD = 50;
+  const SHIPPING_FEE = 5;
+  const PROMOS = { ELEGANCE20: 0.2, ELEGANCE10: 0.1, WELCOME15: 0.15 };
 
-  const PROMO_CODES = {
-    ELEGANCE20: 0.20,
-    ELEGANCE10: 0.10,
-    WELCOME15: 0.15
-  };
-
-  const FALLBACK_PRODUCTS = [
-    {
-      id: 1,
-      name: 'بدلة توكسيدو ملكية سوداء فاخرة',
-      slug: 'royal-black-tuxedo-suit',
-      category_slug: 'suits',
-      category_name: 'بدلات رسمية',
-      description: 'بدلة توكسيدو مصممة خصيصاً للمناسبات والاحتفالات الكبرى من صوف الميرينو الفاخر.',
-      price: 240.00,
-      original_price: 295.00,
-      sizes: ['48 (S)', '50 (M)', '52 (L)', '54 (XL)', '56 (XXL)'],
-      images: ['https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&w=800&q=80'],
-      is_featured: true,
-      is_bestseller: true,
-      reviews_count: 38
-    },
-    {
-      id: 2,
-      name: 'بدلة كلاسيكية زرقاء كحلية من الصوف الخالص',
-      slug: 'navy-blue-classic-wool-suit',
-      category_slug: 'suits',
-      category_name: 'بدلات رسمية',
-      description: 'بدلة عمل رسمية بلون كحلي داكن ملكي تجمع بين الراحة والأناقة.',
-      price: 185.00,
-      original_price: 225.00,
-      sizes: ['48 (S)', '50 (M)', '52 (L)', '54 (XL)'],
-      images: ['https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?auto=format&fit=crop&w=800&q=80'],
-      is_featured: true,
-      is_bestseller: true,
-      reviews_count: 24
-    },
-    {
-      id: 3,
-      name: 'بدلة رمادية عصرية ذات نقوش مربعات ناعمة',
-      slug: 'grey-plaid-tailored-suit',
-      category_slug: 'suits',
-      category_name: 'بدلات رسمية',
-      description: 'تصميم أوروبي عصري بنقشة مربعات دقيقة للمناسبات والاجتماعات.',
-      price: 195.00,
-      original_price: 240.00,
-      sizes: ['50 (M)', '52 (L)', '54 (XL)'],
-      images: ['https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=80'],
-      is_featured: false,
-      is_bestseller: false,
-      reviews_count: 15
-    },
-    {
-      id: 4,
-      name: 'قميص أبيض ناصع من القطن المصري الفاخر',
-      slug: 'egyptian-cotton-white-shirt',
-      category_slug: 'shirts',
-      category_name: 'قمصان فاخرة',
-      description: 'قميص أبيض كلاسيكي من قطن جيزة المصري طويل التيلة.',
-      price: 42.00,
-      original_price: 55.00,
-      sizes: ['S', 'M', 'L', 'XL', 'XXL'],
-      images: ['https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=800&q=80'],
-      is_featured: true,
-      is_bestseller: true,
-      reviews_count: 72
-    },
-    {
-      id: 5,
-      name: 'قميص أكسفورد أزرق سماوي كاجوال وأنيق',
-      slug: 'oxford-sky-blue-shirt',
-      category_slug: 'shirts',
-      category_name: 'قمصان فاخرة',
-      description: 'قميص أكسفورد منسوج بعناية للعمل والخروجات اليومية.',
-      price: 38.00,
-      original_price: 48.00,
-      sizes: ['S', 'M', 'L', 'XL'],
-      images: ['https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=800&q=80'],
-      is_featured: true,
-      is_bestseller: false,
-      reviews_count: 41
-    },
-    {
-      id: 6,
-      name: 'قميص كتان طبيعي بيج للصيف والإجازات',
-      slug: 'pure-linen-beige-summer-shirt',
-      category_slug: 'shirts',
-      category_name: 'قمصان فاخرة',
-      description: 'قميص صيفي من الكتان النقي خفيف ومريح.',
-      price: 45.00,
-      original_price: null,
-      sizes: ['M', 'L', 'XL'],
-      images: ['https://images.unsplash.com/photo-1607345366928-199ea26cfe3e?auto=format&fit=crop&w=800&q=80'],
-      is_featured: false,
-      is_bestseller: true,
-      reviews_count: 19
-    },
-    {
-      id: 7,
-      name: 'بنطال تشينو كلاسيكي كحلي بقصة مدببة',
-      slug: 'classic-navy-slim-chino',
-      category_slug: 'pants',
-      category_name: 'بناطيل رجالية',
-      description: 'بنطال تشينو قطني مريح لإطلالة عصرية أنيقة.',
-      price: 44.00,
-      original_price: 55.00,
-      sizes: ['30', '32', '34', '36', '38'],
-      images: ['https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=800&q=80'],
-      is_featured: true,
-      is_bestseller: true,
-      reviews_count: 53
-    },
-    {
-      id: 8,
-      name: 'بنطال رسمي صوف خفيف رمادي فحمي',
-      slug: 'charcoal-tailored-trousers-side-adjusters',
-      category_slug: 'pants',
-      category_name: 'بناطيل رجالية',
-      description: 'بنطال رسمي إيطالي الطراز بحزام تعديل جانبي.',
-      price: 65.00,
-      original_price: 80.00,
-      sizes: ['31', '32', '34', '36'],
-      images: ['https://images.unsplash.com/photo-1473966968600-fa801b869a1a?auto=format&fit=crop&w=800&q=80'],
-      is_featured: false,
-      is_bestseller: true,
-      reviews_count: 31
-    },
-    {
-      id: 9,
-      name: 'ساعة كلاسيكية رجالية بسوار جلد أسود',
-      slug: 'swiss-classic-leather-watch',
-      category_slug: 'accessories',
-      category_name: 'إكسسوارات وأحذية',
-      description: 'ساعة رجالية كلاسيكية أنيقة بلمسة فخامة عالية.',
-      price: 150.00,
-      original_price: 195.00,
-      sizes: ['قطر 40 ملم'],
-      images: ['https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&w=800&q=80'],
-      is_featured: true,
-      is_bestseller: true,
-      reviews_count: 48
-    },
-    {
-      id: 10,
-      name: 'حزام جلد طبيعي إيطالي بوجهين',
-      slug: 'reversible-italian-leather-belt',
-      category_slug: 'accessories',
-      category_name: 'إكسسوارات وأحذية',
-      description: 'حزام جلد طبيعي بوجهين أسود وبني داكن.',
-      price: 35.00,
-      original_price: 45.00,
-      sizes: ['90 سم', '95 سم', '100 سم', '105 سم'],
-      images: ['https://images.unsplash.com/photo-1624222247344-550fb60583dc?auto=format&fit=crop&w=800&q=80'],
-      is_featured: false,
-      is_bestseller: true,
-      reviews_count: 64
-    },
-    {
-      id: 11,
-      name: 'ساعة كرونوغراف رجالية فاخرة',
-      slug: 'mens-chronograph-luxury-watch',
-      category_slug: 'accessories',
-      category_name: 'إكسسوارات وأحذية',
-      description: 'إكسسوار رجالي أنيق يكمّل إطلالتك اليومية والرسمية.',
-      price: 120.00,
-      original_price: 150.00,
-      sizes: ['مقاس موحد'],
-      images: ['https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80'],
-      is_featured: true,
-      is_bestseller: false,
-      reviews_count: 27
-    }
+  const PRODUCTS = [
+    { id: 1, name: 'بدلة توكسيدو ملكية سوداء فاخرة', category_slug: 'suits', category_name: 'بدلات رسمية', price: 240, original_price: 295, sizes: ['48 (S)', '50 (M)', '52 (L)', '54 (XL)'], images: ['https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&w=800&q=80'], description: 'بدلة توكسيدو فاخرة للمناسبات والاجتماعات الرسمية من صوف الميرينو.', is_featured: true, reviews_count: 38 },
+    { id: 2, name: 'بدلة كلاسيكية زرقاء كحلية من الصوف الخالص', category_slug: 'suits', category_name: 'بدلات رسمية', price: 185, original_price: 225, sizes: ['48 (S)', '50 (M)', '52 (L)', '54 (XL)'], images: ['https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?auto=format&fit=crop&w=800&q=80'], description: 'بدلة كحلية أنيقة بقصة متقنة تناسب العمل والمناسبات.', is_featured: true, reviews_count: 24 },
+    { id: 3, name: 'بدلة رمادية عصرية ذات نقوش مربعات ناعمة', category_slug: 'suits', category_name: 'بدلات رسمية', price: 195, original_price: 240, sizes: ['50 (M)', '52 (L)', '54 (XL)'], images: ['https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=80'], description: 'تصميم عصري بنقشة مربعات خفيفة ومريحة.', is_featured: false, reviews_count: 15 },
+    { id: 4, name: 'قميص أبيض ناصع من القطن المصري الفاخر', category_slug: 'shirts', category_name: 'قمصان فاخرة', price: 42, original_price: 55, sizes: ['S', 'M', 'L', 'XL', 'XXL'], images: ['https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=800&q=80'], description: 'قميص أبيض ناعم من القطن المصري عالي الجودة.', is_featured: true, reviews_count: 72 },
+    { id: 5, name: 'قميص أكسفورد أزرق سماوي كاجوال وأنيق', category_slug: 'shirts', category_name: 'قمصان فاخرة', price: 38, original_price: 48, sizes: ['S', 'M', 'L', 'XL'], images: ['https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=800&q=80'], description: 'قميص سماوي عملي وأنيق للدوام والطلعات.', is_featured: true, reviews_count: 41 },
+    { id: 6, name: 'قميص كتان طبيعي بيج للصيف والإجازات', category_slug: 'shirts', category_name: 'قمصان فاخرة', price: 45, original_price: null, sizes: ['M', 'L', 'XL'], images: ['https://images.unsplash.com/photo-1607345366928-199ea26cfe3e?auto=format&fit=crop&w=800&q=80'], description: 'خامة كتان خفيفة ومريحة للأجواء الدافئة.', is_featured: false, reviews_count: 19 },
+    { id: 7, name: 'بنطال تشينو كلاسيكي كحلي بقصة مدببة', category_slug: 'pants', category_name: 'بناطيل رجالية', price: 44, original_price: 55, sizes: ['30', '32', '34', '36', '38'], images: ['https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=800&q=80'], description: 'بنطال تشينو مرن وأنيق بقصة عصرية.', is_featured: true, reviews_count: 53 },
+    { id: 8, name: 'بنطال رسمي صوف خفيف رمادي فحمي', category_slug: 'pants', category_name: 'بناطيل رجالية', price: 65, original_price: 80, sizes: ['31', '32', '34', '36'], images: ['https://images.unsplash.com/photo-1473966968600-fa801b869a1a?auto=format&fit=crop&w=800&q=80'], description: 'بنطال رسمي خفيف بتفصيل أنيق.', is_featured: false, reviews_count: 31 },
+    { id: 9, name: 'ساعة كلاسيكية رجالية بسوار جلد أسود', category_slug: 'accessories', category_name: 'إكسسوارات وأحذية', price: 150, original_price: 195, sizes: ['40 ملم'], images: ['https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&w=800&q=80'], description: 'ساعة رجالية كلاسيكية بسوار جلدي أنيق.', is_featured: true, reviews_count: 48 },
+    { id: 10, name: 'حزام جلد طبيعي إيطالي بوجهين', category_slug: 'accessories', category_name: 'إكسسوارات وأحذية', price: 35, original_price: 45, sizes: ['90 سم', '95 سم', '100 سم'], images: ['https://images.unsplash.com/photo-1624222247344-550fb60583dc?auto=format&fit=crop&w=800&q=80'], description: 'حزام جلد طبيعي بوجهين أسود وبني.', is_featured: false, reviews_count: 64 },
+    { id: 11, name: 'ساعة كرونوغراف رجالية فاخرة', category_slug: 'accessories', category_name: 'إكسسوارات وأحذية', price: 120, original_price: 150, sizes: ['مقاس موحد'], images: ['https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80'], description: 'إكسسوار رجالي أنيق لإطلالة مكتملة.', is_featured: true, reviews_count: 27 }
   ];
 
-  function normalizeCategory(cat) {
-    const v = String(cat || 'all').trim().toLowerCase();
-    if (!v || v === 'all' || v.includes('كافة') || v.includes('التشكيلة الكاملة')) return 'all';
-    if (v.includes('suit') || v.includes('بدل')) return 'suits';
-    if (v.includes('shirt') || v.includes('قميص') || v.includes('قمصان')) return 'shirts';
-    if (v.includes('pant') || v.includes('بنطال') || v.includes('بناطيل')) return 'pants';
-    if (v.includes('accessor') || v.includes('إكسسوار') || v.includes('اكسسوار') || v.includes('ساع')) return 'accessories';
-    return v;
+  function normCat(v) {
+    const s = String(v || 'all').toLowerCase().trim();
+    if (!s || s === 'all' || s.includes('كافة') || s.includes('التشكيلة')) return 'all';
+    if (s.includes('suit') || s.includes('بدل')) return 'suits';
+    if (s.includes('shirt') || s.includes('قميص') || s.includes('قمصان')) return 'shirts';
+    if (s.includes('pant') || s.includes('بنطال') || s.includes('بناطيل')) return 'pants';
+    if (s.includes('accessor') || s.includes('إكسسوار') || s.includes('اكسسوار') || s.includes('ساع')) return 'accessories';
+    return s;
   }
 
-  class LuxuryApp {
+  class StoreApp {
     constructor() {
-      this.currency = CURRENCY;
-      this.freeShippingThreshold = FREE_SHIPPING_THRESHOLD;
-      this.shippingFee = SHIPPING_FEE;
       this.cart = [];
-      this.wishlist = [];
-      this.appliedPromo = null;
-      this.paymentMethod = 'كاش (الدفع عند الاستلام)';
-      this.selectedSizeByProduct = {};
-      this.currentFilter = {
-        category: 'all',
-        search: '',
-        minPrice: 0,
-        maxPrice: 500,
-        sort: 'popular',
-        size: null
-      };
+      this.promo = null;
+      this.payType = 'كاش';
+      this.filter = { category: 'all', search: '', maxPrice: 500, sort: 'popular' };
+      this.load();
     }
 
-    showToast(message, isError = false) {
-      let toast = document.getElementById('eleganceToast');
-      if (!toast) {
-        toast = document.createElement('div');
-        toast.id = 'eleganceToast';
-        toast.style.cssText = [
-          'position:fixed',
-          'bottom:24px',
-          'left:24px',
-          'z-index:99999',
-          'padding:12px 18px',
-          'border-radius:10px',
-          'color:#fff',
-          'font-weight:700',
-          'font-size:0.9rem',
-          'box-shadow:0 10px 25px rgba(0,0,0,0.25)',
-          'transition:opacity 0.25s ease,transform 0.25s ease',
-          'opacity:0',
-          'transform:translateY(10px)',
-          'pointer-events:none',
-          'max-width:90vw'
-        ].join(';');
-        document.body.appendChild(toast);
-      }
-      toast.style.background = isError ? '#dc2626' : '#0f172a';
-      toast.textContent = String(message || '');
-      toast.style.opacity = '1';
-      toast.style.transform = 'translateY(0)';
-      clearTimeout(this._toastTimer);
-      this._toastTimer = setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.transform = 'translateY(10px)';
-      }, 2800);
+    fmt(n) { return `${(Number(n) || 0).toFixed(2)} ${CURRENCY}`; }
+
+    load() {
+      try { this.cart = JSON.parse(localStorage.getItem('elg_cart') || '[]') || []; } catch (_) { this.cart = []; }
+      try { this.promo = JSON.parse(localStorage.getItem('elg_promo') || 'null'); } catch (_) { this.promo = null; }
     }
 
-    getProductsList() {
-      if (window.productsStore && typeof window.productsStore.getAll === 'function') {
-        const list = window.productsStore.getAll();
-        if (Array.isArray(list) && list.length > 0) return list;
-      }
-      return FALLBACK_PRODUCTS;
+    save() {
+      try {
+        localStorage.setItem('elg_cart', JSON.stringify(this.cart));
+        localStorage.setItem('elg_promo', JSON.stringify(this.promo));
+      } catch (_) {}
     }
 
-    getFilteredProducts() {
-      const state = this.currentFilter || {};
-      const cat = normalizeCategory(state.category || 'all');
-      const search = String(state.search || '').trim().toLowerCase();
-      const minP = Number(state.minPrice) || 0;
-      const maxP = Number(state.maxPrice) || Infinity;
-      const sort = state.sort || 'popular';
-      const size = state.size || null;
-
-      let list = [...this.getProductsList()];
-
-      if (cat !== 'all') {
-        list = list.filter(p => normalizeCategory(p.category_slug || p.category_name) === cat);
-      }
-
-      if (search) {
-        list = list.filter(p =>
-          String(p.name || '').toLowerCase().includes(search) ||
-          String(p.description || '').toLowerCase().includes(search) ||
-          String(p.category_name || '').toLowerCase().includes(search)
-        );
-      }
-
-      list = list.filter(p => {
-        const pr = Number(p.price) || 0;
-        return pr >= minP && pr <= maxP;
-      });
-
-      if (size) {
-        list = list.filter(p => Array.isArray(p.sizes) && p.sizes.includes(size));
-      }
-
-      if (sort === 'price_asc') list.sort((a, b) => Number(a.price) - Number(b.price));
-      else if (sort === 'price_desc') list.sort((a, b) => Number(b.price) - Number(a.price));
-      else if (sort === 'newest') list.sort((a, b) => Number(b.id) - Number(a.id));
-      else list.sort((a, b) => (Number(b.reviews_count) || 0) - (Number(a.reviews_count) || 0));
-
-      return list;
+    totals() {
+      const count = this.cart.reduce((a, b) => a + (Number(b.qty) || 1), 0);
+      const subtotal = this.cart.reduce((a, b) => a + (Number(b.price) || 0) * (Number(b.qty) || 1), 0);
+      const discount = subtotal * (this.promo ? Number(this.promo.rate) || 0 : 0);
+      const afterDisc = Math.max(0, subtotal - discount);
+      const shipping = subtotal === 0 || afterDisc >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_FEE;
+      return { count, subtotal, discount, shipping, total: afterDisc + shipping };
     }
 
-    formatPrice(val) {
-      const n = Number(val);
-      return `${(Number.isFinite(n) ? n : 0).toFixed(2)} ${this.currency}`; }  setCategory(category) { this.currentFilter.category = normalizeCategory(category); this.syncActiveButtons(); this.renderCatalog(); }  setSearch(q) { this.currentFilter.search = String(q \vert{}\vert{} ''); this.renderCatalog(); }  setMaxPrice(val) { const n = Number(val); this.currentFilter.maxPrice = Number.isFinite(n) && n >= 0 ? n : 500; const lbl = document.getElementById('maxPriceValue') \vert{}\vert{} document.getElementById('priceRangeVal'); if (lbl) lbl.textContent = `حتى ${Math.round(this.currentFilter.maxPrice)} ${this.currency}`; this.renderCatalog(); }  setSort(val) { this.currentFilter.sort = val \vert{}\vert{} 'popular'; this.renderCatalog(); }  resetFilters() { this.currentFilter = { category: 'all', search: '', minPrice: 0, maxPrice: 500, sort: 'popular', size: null }; this.syncActiveButtons(); this.renderCatalog(); }  syncActiveButtons() { const active = this.currentFilter.category; document.querySelectorAll('[data-category], [data-cat], .catalog-tab-btn, .filter-item').forEach(el => { const raw = el.getAttribute('data-category') \vert{}\vert{} el.getAttribute('data-cat') \vert{}\vert{} el.textContent \vert{}\vert{} ''; el.classList.toggle('active', normalizeCategory(raw) === active); }); }  loadStorage() { try { const c = JSON.parse(localStorage.getItem('elegance_cart') \vert{}\vert{} '[]'); if (Array.isArray(c)) this.cart = c; } catch (_) {} try { const w = JSON.parse(localStorage.getItem('elegance_wishlist') \vert{}\vert{} '[]'); if (Array.isArray(w)) this.wishlist = w; } catch (_) {} try { const promo = JSON.parse(localStorage.getItem('elegance_promo') \vert{}\vert{} 'null'); if (promo && promo.code && promo.rate) this.appliedPromo = promo; } catch (_) {} }  saveStorage() { try { localStorage.setItem('elegance_cart', JSON.stringify(this.cart)); localStorage.setItem('elegance_wishlist', JSON.stringify(this.wishlist)); localStorage.setItem('elegance_promo', JSON.stringify(this.appliedPromo)); } catch (_) {} }  quickAdd(productId, selectedSize = null) { const product = this.getProductsList().find(p => Number(p.id) === Number(productId)); if (!product) return; const size = selectedSize \vert{}\vert{} this.selectedSizeByProduct[product.id] \vert{}\vert{} (Array.isArray(product.sizes) && product.sizes[0]) \vert{}\vert{} ''; const existing = this.cart.find(i => Number(i.id) === Number(product.id) && String(i.size \vert{}\vert{} '') === String(size)); if (existing) { existing.quantity = (Number(existing.quantity) \vert{}\vert{} 1) + 1; } else { this.cart.push({ id: product.id, name: product.name, size, price: Number(product.price) \vert{}\vert{} 0, image: Array.isArray(product.images) ? product.images[0] : '', quantity: 1 }); } this.saveStorage(); this.updateCartUI(); this.showToast(`تمت إضافة "${product.name}" إلى السلة`);
+    addToCart(id, size) {
+      const p = PRODUCTS.find(x => Number(x.id) === Number(id));
+      if (!p) return;
+      const chosenSize = size || (p.sizes && p.sizes[0]) || '';
+      const found = this.cart.find(i => Number(i.id) === Number(p.id) && i.size === chosenSize);
+      if (found) found.qty = (Number(found.qty) || 1) + 1;
+      else this.cart.push({ id: p.id, name: p.name, size: chosenSize, price: p.price, image: p.images[0], qty: 1 });
+      this.save();
+      this.renderCart();
     }
 
-    buyNowProduct(productId, selectedSize = null) {
-      const product = this.getProductsList().find(p => Number(p.id) === Number(productId));
-      if (!product) return;
-      const size = selectedSize || this.selectedSizeByProduct[product.id] || (Array.isArray(product.sizes) && product.sizes[0]) || '';
-      const existing = this.cart.find(i => Number(i.id) === Number(product.id) && String(i.size || '') === String(size));
-      if (existing) {
-        existing.quantity = (Number(existing.quantity) || 1) + 1;
-      } else {
-        this.cart.push({
-          id: product.id,
-          name: product.name,
-          size,
-          price: Number(product.price) || 0,
-          image: Array.isArray(product.images) ? product.images[0] : '',
-          quantity: 1
-        });
-      }
-      this.saveStorage();
-      this.updateCartUI();
-      this.closeModal('quickViewModal');
-      this.openCheckoutModal();
+    buyNow(id, size) {
+      this.addToCart(id, size);
+      this.openCheckout();
     }
 
-    openProductDetails(productId) {
-      const product = this.getProductsList().find(p => Number(p.id) === Number(productId));
-      if (!product) return;
+    changeQty(idx, d) {
+      if (!this.cart[idx]) return;
+      const next = (Number(this.cart[idx].qty) || 1) + d;
+      if (next <= 0) this.cart.splice(idx, 1);
+      else this.cart[idx].qty = next;
+      this.save();
+      this.renderCart();
+    }
 
-      let modal = document.getElementById('quickViewModal');
-      if (!modal) {
-        modal = document.createElement('div');
-        modal.id = 'quickViewModal';
-        document.body.appendChild(modal);
+    removeItem(idx) {
+      this.cart.splice(idx, 1);
+      this.save();
+      this.renderCart();
+    }
+
+    applyPromo(code) {
+      const c = String(code || '').trim().toUpperCase();
+      if (!c || !Object.prototype.hasOwnProperty.call(PROMOS, c)) {
+        alert('كود الخصم غير صحيح. جرّبي: ELEGANCE20');
+        return;
       }
+      this.promo = { code: c, rate: PROMOS[c] };
+      this.save();
+      this.renderCart();
+    }
 
-      modal.style.cssText = [
-        'position:fixed',
-        'inset:0',
-        'background:rgba(15,23,42,0.65)',
-        'display:flex',
-        'align-items:center',
-        'justify-content:center',
-        'padding:16px',
-        'z-index:9998'
-      ].join(';');
+    setCategory(cat) {
+      this.filter.category = normCat(cat);
+      this.renderAll();
+    }
 
-      const sizes = Array.isArray(product.sizes) && product.sizes.length ? product.sizes : ['مقاس موحد'];
-      const chosenSize = this.selectedSizeByProduct[product.id] || sizes[0];
-      this.selectedSizeByProduct[product.id] = chosenSize;
-      const img = Array.isArray(product.images) && product.images.length ? product.images[0] : '';
+    cardHtml(p) {
+      return `
+        <div class="product-card" style="background:#fff; border:1px solid #e2e8f0; border-radius:12px; overflow:hidden; padding:12px; display:flex; flex-direction:column; gap:8px;">
+          <img src="${p.images[0]}" alt="${p.name}" onclick="window.app.openDetails(${p.id})" style="width:100%; height:240px; object-fit:cover; border-radius:8px; cursor:pointer; background:#f8fafc;">
+          <div style="font-size:0.78rem; color:#b45309; font-weight:700;">${p.category_name}</div>
+          <h3 onclick="window.app.openDetails(${p.id})" style="margin:0; font-size:0.98rem; font-weight:800; color:#0f172a; cursor:pointer;">${p.name}</h3>
+          <div style="font-weight:900; font-size:1rem; color:#0f172a;">${this.fmt(p.price)}</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:auto;">
+            <button type="button" onclick="window.app.buyNow(${p.id})" style="padding:9px; border:none; border-radius:8px; background:#0f172a; color:#fff; font-weight:800; cursor:pointer;">اطلب الآن</button>
+            <button type="button" onclick="window.app.addToCart(${p.id})" style="padding:9px; border:1px solid #0f172a; border-radius:8px; background:#fff; color:#0f172a; font-weight:800; cursor:pointer;">أضف للسلة</button>
+          </div>
+        </div>
+      `;
+    }
 
-      modal.innerHTML = `
-        <div style="background:#fff; width:100%; max-width:680px; max-height:92vh; overflow-y:auto; border-radius:16px; padding:24px; box-shadow:0 24px 60px rgba(0,0,0,0.35); position:relative;">
-          <button type="button" id="closeProductDetailsBtn" aria-label="إغلاق" style="position:absolute; top:16px; left:16px; width:34px; height:34px; border-radius:50%; border:1px solid #e2e8f0; background:#f8fafc; font-size:1.1rem; cursor:pointer;">✕</button>
-          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:20px; align-items:start;">
-            <img src="${img}" alt="${product.name}" style="width:100%; height:290px; object-fit:cover; border-radius:12px; background:#f8fafc;" />
-            <div>
-              <span style="display:inline-block; font-size:0.8rem; font-weight:800; color:#b45309; background:#fef3c7; padding:4px 1
+    openDetails(id) {
+      const p = PRODUCTS.find(x => Number(x.id) === Number(id));
+      if (!p) return;
+      this.ensureBox('elgDetailsBox', `
+        <div style="background:#fff; width:100%; max-width:560px; border-radius:14px; padding:20px; position:relative; max-height:90vh; overflow-y:auto;">
+          <button type="button" onclick="document.getElementById('elgDetailsBox').style.display='none'" style="position:absolute; top:12px; left:12px; border:none; background:#f1f5f9; width:32px; height:32px; border-radius:50%; cursor:pointer; font-weight:800;">✕</button>
+          <img src="${p.images[0]}" alt="${p.name}" style="width:100%; height:250px; object-fit:cover; border-radius:10px; margin-bottom:12px;">
+          <h2 style="margin:0 0 6px; font-size:1.2rem; color:#0f172a;">${p.name}</h2>
+          <div style="font-weight:900; font-size:1.1rem; margin-bottom:8px;">${this.fmt(p.price)}</div>
+          <p style="margin:0 0 12px; color:#475569; font-size:0.9rem;">${p.description}</p>
+          <div style="margin-bottom:14px;">
+            <label style="display:block; font-weight:700; font-size:0.85rem; margin-bottom:4px;">المقاس:</label>
+            <select id="detSizeSelect" style="width:100%; padding:8px; border:1px solid #cbd5e1; border-radius:8px;">
+              ${(p.sizes || ['موحد']).map(s => `<option value="${s}">${s}</option>`).join('')}
+            </select>
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <button type="button" onclick="window.app.buyNow(${p.id}, document.getElementById('detSizeSelect').value); document.getElementById('elgDetailsBox').style.display='none';" style="padding:11px; border:none; border-radius:8px; background:#0f172a; color:#fff; font-weight:800; cursor:pointer;">اطلب الآن</button>
+            <button type="button" onclick="window.app.addToCart(${p.id}, document.getElementById('detSizeSelect').value); document.getElementById('elgDetailsBox').style.display='none';" style="padding:11px; border:1px solid #0f172a; border-radius:8px; background:#fff; color:#0f172a; font-weight:800; cursor:pointer;">إضافة للسلة</button>
+          </div>
+        </div>
+      `);
+    }
+
+    ensureBox(id, innerHtml) {
+      let el = document.getElementById(id);
+      if (!el) {
+        el = document.createElement('div');
+        el.id = id;
+        el.style.cssText = 'position:fixed; inset:0; background:rgba(15,23,42,0.65); display:flex; align-items:center; justify-content:center; padding:14px; z-index:99999;';
+        document.body.appendChild(el);
+      }
+      el.innerHTML = innerHtml;
+      el.style.display = 'flex';
+    }
+
+    openCheckout() {
+      if (!this.cart.length) {
+        alert('السلة فارغة! اختاري منتجاً أولاً.');
+        return;
+      }
+      const { subtotal, discount, shipping, total } = this.totals();
+      const rows = this.cart.map(i => `<div style="display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px dashed #e2e8f0; font-size:0.88rem;"><span>${i.name} (${i.size}) × ${i.qty}</span><strong>${this.fmt(i.price * i.qty)}</strong></div>`).join('');
+
+      this.ensureBox('elgCheckoutBox', `
+        <div id="elgCheckoutCard" style="background:#fff; width:100%; max-width:500px; border-radius:14px; padding:20px; position:relative; max-height:92vh; overflow-y:auto;">
+          <button type="button" onclick="document.getElementById('elgCheckoutBox').style.display='none'" style="position:absolute; top:12px; left:12px; border:none; background:#f1f5f9; width:32px; height:32px; border-radius:50%; cursor:pointer; font-weight:800;">✕</button>
+          <h2 style="margin:0 0 10px; font-size:1.2rem; color:#0f172a;">إتمام الطلب وتأكيد الدفع</h2>
+          <div style="background:#f8fafc; padding:10px; border-radius:10px; margin-bottom:12px;">
+            ${rows}
+            <div style="display:flex; gap:6px; margin-top:10px;">
+              <input type="text" id="chkPromoInput" value="${this.promo ? this.promo.code : ''}" placeholder="كود الخصم (ELEGANCE20)" style="flex:1; padding:7px 10px; border:1px solid #cbd5e1; border-radius:8px;">
+              <button type="button" onclick="window.app.applyPromo(document.getElementById('chkPromoInput').value); window.app.openCheckout();" style="padding:7px 12px; border:none; border-radius:8px; background:#334155; color:#fff; font-weight:700; cursor:pointer;">تطبيق</button>
+            </div>
+            <div style="margin-top:8px; font-size:0.88rem;">
+              <div>المجموع الفرعي: <strong>${this.fmt(subtotal)}</strong></div>
+              ${discount > 0 ? `<div style="color:#1580
+              
