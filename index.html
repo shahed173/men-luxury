@@ -47,28 +47,28 @@
       <!-- Navigation Links -->
       <ul class="nav-links">
         <li><a href="#home" class="nav-link active">الرئيسية</a></li>
-        <li><a href="#catalog" class="nav-link" onclick="window.app.currentFilter.category='all'; window.app.renderCatalog();">التشكيلة الكاملة</a></li>
-        <li><a href="#catalog" class="nav-link" onclick="window.app.currentFilter.category='suits'; window.app.renderCatalog();">بدلات رسمية</a></li>
-        <li><a href="#catalog" class="nav-link" onclick="window.app.currentFilter.category='shirts'; window.app.renderCatalog();">قمصان فاخرة</a></li>
-        <li><a href="#catalog" class="nav-link" onclick="window.app.currentFilter.category='pants'; window.app.renderCatalog();">بناطيل</a></li>
-        <li><a href="#catalog" class="nav-link" onclick="window.app.currentFilter.category='accessories'; window.app.renderCatalog();">إكسسوارات</a></li>
+        <li><a href="#catalog" class="nav-link" onclick="event.preventDefault(); window.app && typeof window.app.setCategory === 'function' ? window.app.setCategory('all') : (window.__pendingCategory = 'all'); document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' });">التشكيلة الكاملة</a></li>
+        <li><a href="#catalog" class="nav-link" onclick="event.preventDefault(); window.app && typeof window.app.setCategory === 'function' ? window.app.setCategory('suits') : (window.__pendingCategory = 'suits'); document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' });">بدلات رسمية</a></li>
+        <li><a href="#catalog" class="nav-link" onclick="event.preventDefault(); window.app && typeof window.app.setCategory === 'function' ? window.app.setCategory('shirts') : (window.__pendingCategory = 'shirts'); document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' });">قمصان فاخرة</a></li>
+        <li><a href="#catalog" class="nav-link" onclick="event.preventDefault(); window.app && typeof window.app.setCategory === 'function' ? window.app.setCategory('pants') : (window.__pendingCategory = 'pants'); document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' });">بناطيل</a></li>
+        <li><a href="#catalog" class="nav-link" onclick="event.preventDefault(); window.app && typeof window.app.setCategory === 'function' ? window.app.setCategory('accessories') : (window.__pendingCategory = 'accessories'); document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' });">إكسسوارات</a></li>
       </ul>
 
       <!-- Navbar Action Buttons -->
       <div class="nav-actions">
         <!-- Quick Search -->
-        <button class="icon-btn" title="البحث في المنتجات" onclick="document.getElementById('catalog').scrollIntoView(); document.getElementById('catalogSearchInput').focus();">
+        <button class="icon-btn" title="البحث في المنتجات" onclick="document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' }); document.getElementById('catalogSearchInput')?.focus();">
           <i class="fa-solid fa-magnifying-glass"></i>
         </button>
 
         <!-- Wishlist -->
-        <button class="icon-btn" title="قائمة الرغبات" onclick="window.app.showToast('قائمتك المفضلة تحتوي على ' + window.app.wishlist.length + ' عناصر');">
+        <button class="icon-btn" title="قائمة الرغبات" onclick="window.app && typeof window.app.showToast === 'function' ? window.app.showToast('قائمتك المفضلة تحتوي على ' + (window.app.wishlist?.length || 0) + ' عناصر') : null;">
           <i class="fa-regular fa-heart"></i>
           <span class="badge-count wishlist-badge-count" style="display:none;">0</span>
         </button>
 
         <!-- User Profile / Login -->
-        <button id="userBtn" class="icon-btn" title="حسابي" onclick="window.app.openAuthModal()">
+        <button id="userBtn" class="icon-btn" title="حسابي" onclick="window.app && typeof window.app.openAuthModal === 'function' ? window.app.openAuthModal() : null;">
           <i class="fa-regular fa-user"></i>
         </button>
 
@@ -79,7 +79,7 @@
         </button>
 
         <!-- Mobile Toggle -->
-        <button class="icon-btn hamburger-btn" onclick="document.querySelector('.nav-links').classList.toggle('active')">
+        <button class="icon-btn hamburger-btn" onclick="document.querySelector('.nav-links')?.classList.toggle('active')">
           <i class="fa-solid fa-bars"></i>
         </button>
       </div>
@@ -103,7 +103,7 @@
           <a href="#catalog" class="btn btn-primary">
             <i class="fa-solid fa-bag-shopping"></i> تسوق التشكيلة الجديدة
           </a>
-          <button class="btn btn-secondary" onclick="window.app.currentFilter.category='suits'; window.app.renderCatalog(); document.getElementById('catalog').scrollIntoView();">
+          <button class="btn btn-secondary" onclick="window.app && typeof window.app.setCategory === 'function' ? window.app.setCategory('suits') : (window.__pendingCategory = 'suits'); document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' });">
             <i class="fa-solid fa-user-tie"></i> استكشف البدلات الملكية
           </button>
         </div>
@@ -181,7 +181,7 @@
 
     <div class="categories-grid">
       <!-- 1. Suits -->
-      <div class="category-card" onclick="window.app.currentFilter.category='suits'; window.app.renderCatalog(); document.getElementById('catalog').scrollIntoView();">
+      <div class="category-card" onclick="window.app && typeof window.app.setCategory === 'function' ? window.app.setCategory('suits') : (window.__pendingCategory = 'suits'); document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' });">
         <img src="https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&w=800&q=80" alt="بدلات رسمية" />
         <div class="category-overlay">
           <h3>بدلات رسمية وتوكسيدو</h3>
@@ -190,7 +190,7 @@
       </div>
 
       <!-- 2. Shirts -->
-      <div class="category-card" onclick="window.app.currentFilter.category='shirts'; window.app.renderCatalog(); document.getElementById('catalog').scrollIntoView();">
+      <div class="category-card" onclick="window.app && typeof window.app.setCategory === 'function' ? window.app.setCategory('shirts') : (window.__pendingCategory = 'shirts'); document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' });">
         <img src="https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=800&q=80" alt="قمصان فاخرة" />
         <div class="category-overlay">
           <h3>قمصان كلاسيكية وكاجوال</h3>
@@ -199,7 +199,7 @@
       </div>
 
       <!-- 3. Pants -->
-      <div class="category-card" onclick="window.app.currentFilter.category='pants'; window.app.renderCatalog(); document.getElementById('catalog').scrollIntoView();">
+      <div class="category-card" onclick="window.app && typeof window.app.setCategory === 'function' ? window.app.setCategory('pants') : (window.__pendingCategory = 'pants'); document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' });">
         <img src="https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=800&q=80" alt="بناطيل رجالية" />
         <div class="category-overlay">
           <h3>بناطيل شينو ورسمية</h3>
@@ -208,7 +208,7 @@
       </div>
 
       <!-- 4. Accessories -->
-      <div class="category-card" onclick="window.app.currentFilter.category='accessories'; window.app.renderCatalog(); document.getElementById('catalog').scrollIntoView();">
+      <div class="category-card" onclick="window.app && typeof window.app.setCategory === 'function' ? window.app.setCategory('accessories') : (window.__pendingCategory = 'accessories'); document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' });">
         <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=800&q=80" alt="إكسسوارات رجالية" />
         <div class="category-overlay">
           <h3>إكسسوارات وأحزمة وساعات</h3>
@@ -243,7 +243,7 @@
         <div class="promo-code-box">
           <span>كود الخصم:</span>
           <span class="code">ELEGANCE20</span>
-          <button class="btn btn-primary" style="padding:4px 12px; font-size:0.8rem;" onclick="navigator.clipboard.writeText('ELEGANCE20'); window.app.showToast('تم نسخ كود الخصم ELEGANCE20!');">
+          <button class="btn btn-primary" style="padding:4px 12px; font-size:0.8rem;" onclick="navigator.clipboard?.writeText('ELEGANCE20'); window.app && typeof window.app.showToast === 'function' ? window.app.showToast('تم نسخ كود الخصم ELEGANCE20!') : null;">
             نسخ الكود
           </button>
         </div>
@@ -336,10 +336,10 @@
             <span>10 د.أ</span>
             <span id="priceRangeVal" style="color:var(--accent);">حتى 350 د.أ</span>
           </div>
-          <input type="range" id="priceRangeSlider" min="15" max="350" step="5" value="350" style="width:100%; accent-color:var(--accent); cursor:pointer;" oninput="document.getElementById('priceRangeVal').textContent = 'حتى ' + this.value + ' د.أ'; window.app.currentFilter.maxPrice = Number(this.value); window.app.renderCatalog();" />
+          <input type="range" id="priceRangeSlider" min="15" max="350" step="5" value="350" style="width:100%; accent-color:var(--accent); cursor:pointer;" oninput="document.getElementById('priceRangeVal').textContent = 'حتى ' + this.value + ' د.أ'; if (window.app && typeof window.app.setMaxPrice === 'function') { window.app.setMaxPrice(Number(this.value)); }" />
         </div>
 
-        <button class="btn btn-outline-dark" style="width:100%; margin-top:10px;" onclick="window.app.resetFilters()">
+        <button class="btn btn-outline-dark" style="width:100%; margin-top:10px;" onclick="window.app && typeof window.app.resetFilters === 'function' ? window.app.resetFilters() : null;">
           <i class="fa-solid fa-rotate-right"></i> إعادة ضبط الفلاتر
         </button>
       </aside>
@@ -435,7 +435,7 @@
   <!-- ================= Quick View Modal ================= -->
   <div id="quickViewModal" class="modal-overlay">
     <div class="modal-window">
-      <button class="close-modal-btn" onclick="window.app.closeModal('quickViewModal')">
+      <button class="close-modal-btn" onclick="window.app && typeof window.app.closeModal === 'function' ? window.app.closeModal('quickViewModal') : null;">
         <i class="fa-solid fa-xmark"></i>
       </button>
       <div id="quickViewContent">
@@ -447,7 +447,7 @@
   <!-- ================= Size Guide Modal ================= -->
   <div id="sizeGuideModal" class="modal-overlay">
     <div class="modal-window" style="max-width:700px; padding:32px;">
-      <button class="close-modal-btn" onclick="window.app.closeModal('sizeGuideModal')">
+      <button class="close-modal-btn" onclick="window.app && typeof window.app.closeModal === 'function' ? window.app.closeModal('sizeGuideModal') : null;">
         <i class="fa-solid fa-xmark"></i>
       </button>
       
@@ -506,7 +506,7 @@
       </table>
 
       <div style="margin-top:24px; text-align:center;">
-        <button class="btn btn-primary" onclick="window.app.closeModal('sizeGuideModal')">
+        <button class="btn btn-primary" onclick="window.app && typeof window.app.closeModal === 'function' ? window.app.closeModal('sizeGuideModal') : null;">
           فهمت، العودة لاختيار المقاس
         </button>
       </div>
@@ -516,7 +516,7 @@
   <!-- ================= Multi-step Checkout Modal ================= -->
   <div id="checkoutModal" class="modal-overlay">
     <div class="modal-window checkout-window">
-      <button class="close-modal-btn" onclick="window.app.closeModal('checkoutModal')">
+      <button class="close-modal-btn" onclick="window.app && typeof window.app.closeModal === 'function' ? window.app.closeModal('checkoutModal') : null;">
         <i class="fa-solid fa-xmark"></i>
       </button>
 
@@ -587,7 +587,7 @@
           </div>
 
           <div style="display:flex; justify-content:flex-end; margin-top:24px;">
-            <button class="btn btn-primary" onclick="window.checkoutManager.goToStep(2)">
+            <button class="btn btn-primary" onclick="window.checkoutManager?.goToStep?.(2)">
               المتابعة لاختيار طريقة الدفع <i class="fa-solid fa-arrow-left"></i>
             </button>
           </div>
@@ -595,7 +595,6 @@
 
         <!-- Step 2: Payment Integration (Stripe Simulated / Credit Card / COD) -->
         <div id="stepContent2" class="checkout-step-content" style="display:none;">
-          <!-- Payment Method Choice -->
           <div class="payment-methods-grid">
             <div class="payment-method-card selected" data-method="credit_card">
               <div class="payment-method-icon"><i class="fa-solid fa-credit-card"></i></div>
@@ -614,7 +613,6 @@
             </div>
           </div>
 
-          <!-- Interactive Simulated Credit Card UI -->
           <div id="creditCardInputsSection">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
               <span style="font-size:0.88rem; font-weight:700; color:#64748b;">معاينة البطاقة التفاعلية:</span>
@@ -664,16 +662,14 @@
             </div>
           </div>
 
-          <!-- Cash On Delivery Notice -->
           <div id="codNoticeSection" style="display:none; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px; padding:20px; margin-bottom:20px; text-align:center;">
             <i class="fa-solid fa-hand-holding-dollar" style="font-size:2rem; color:#16a34a; margin-bottom:8px;"></i>
             <h4 style="color:#166534; font-weight:800; font-size:1.1rem; margin-bottom:6px;">تم اختيار الدفع عند الاستلام</h4>
             <p style="color:#15803d; font-size:0.9rem;">سيتم تحصيل المبلغ بالدينار الأردني عند استلام الشحنة من مندوب التوصيل. يرجى توفير المبلغ جاهزاً لتسريع عملية الاستلام.</p>
           </div>
 
-          <!-- Action Buttons -->
           <div style="display:flex; justify-content:space-between; align-items:center; margin-top:24px;">
-            <button class="btn btn-secondary" style="background:#f1f5f9; color:#0f172a;" onclick="window.checkoutManager.goToStep(1)">
+            <button class="btn btn-secondary" style="background:#f1f5f9; color:#0f172a;" onclick="window.checkoutManager?.goToStep?.(1)">
               <i class="fa-solid fa-arrow-right"></i> رجوع لبيانات الشحن
             </button>
             <button id="placeOrderBtn" class="btn btn-primary" style="height:48px; padding:0 32px;">
@@ -688,7 +684,7 @@
   <!-- ================= Authentication Modal (Login / Register) ================= -->
   <div id="authModal" class="modal-overlay">
     <div class="modal-window" style="max-width:480px; padding:36px;">
-      <button class="close-modal-btn" onclick="window.app.closeModal('authModal')">
+      <button class="close-modal-btn" onclick="window.app && typeof window.app.closeModal === 'function' ? window.app.closeModal('authModal') : null;">
         <i class="fa-solid fa-xmark"></i>
       </button>
 
@@ -700,7 +696,6 @@
         <p style="color:#64748b; font-size:0.88rem;">سجل الدخول لمتابعة طلباتك أو إنشاء حساب جديد</p>
       </div>
 
-      <!-- Quick Demo Login Helpers -->
       <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px; margin-bottom:20px; text-align:center;">
         <span style="font-size:0.8rem; font-weight:700; color:#64748b; display:block; margin-bottom:8px;">تجربة سريعة بنقرة واحدة:</span>
         <div style="display:flex; gap:8px; justify-content:center;">
@@ -713,7 +708,6 @@
         </div>
       </div>
 
-      <!-- Tabs: Login vs Register -->
       <div style="display:flex; border-bottom:1px solid #e2e8f0; margin-bottom:20px;">
         <button id="authTabLogin" style="flex:1; padding:10px; background:none; border:none; border-bottom:2px solid var(--accent); font-weight:800; font-family:inherit; cursor:pointer;" onclick="document.getElementById('loginForm').style.display='block'; document.getElementById('registerForm').style.display='none'; this.style.borderBottom='2px solid var(--accent)'; document.getElementById('authTabReg').style.borderBottom='none';">
           تسجيل الدخول
@@ -723,7 +717,6 @@
         </button>
       </div>
 
-      <!-- Login Form -->
       <form id="loginForm">
         <div class="form-group">
           <label>البريد الإلكتروني</label>
@@ -731,4 +724,35 @@
         </div>
         <div class="form-group">
           <label>كلمة المرور</label>
-          <input type="password"
+          <input type="password" id="loginPass" class="form-control" placeholder="••••••••" required />
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%; height:46px; margin-top:10px;">
+          تسجيل الدخول
+        </button>
+      </form>
+
+      <form id="registerForm" style="display:none;">
+        <div class="form-group">
+          <label>الاسم الكامل</label>
+          <input type="text" id="regName" class="form-control" placeholder="الاسم الكامل" required />
+        </div>
+        <div class="form-group">
+          <label>البريد الإلكتروني</label>
+          <input type="email" id="regEmail" class="form-control" placeholder="name@example.com" required />
+        </div>
+        <div class="form-group">
+          <label>كلمة المرور</label>
+          <input type="password" id="regPass" class="form-control" placeholder="••••••••" required />
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%; height:46px; margin-top:10px;">
+          إنشاء حساب
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/products.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
