@@ -204,11 +204,33 @@
       ];
       for (const id of idsToHide) {
         const el = document.getElementById(id);
-        if (el) el.remove();
+        if (el) el.style.setProperty('display', 'none', 'important');
       }
 
       const toolbar = document.querySelector('#catalog .catalog-toolbar');
-      if (toolbar) toolbar.remove();
+      if (toolbar) toolbar.style.setProperty('display', 'none', 'important');
+
+      const sidebar = document.querySelector('#catalog .catalog-sidebar');
+      if (sidebar) sidebar.style.setProperty('display', 'none', 'important');
+
+      const catalogLayout = document.querySelector('#catalog .catalog-layout');
+      if (catalogLayout) {
+        catalogLayout.style.setProperty('display', 'block', 'important');
+        catalogLayout.style.setProperty('grid-template-columns', '1fr', 'important');
+        catalogLayout.style.setProperty('gap', '0px', 'important');
+        catalogLayout.style.setProperty('margin-top', '0px', 'important');
+        catalogLayout.style.setProperty('padding-top', '0px', 'important');
+      }
+
+      const catalogMain = document.querySelector('#catalog .catalog-main');
+      if (catalogMain) {
+        catalogMain.style.setProperty('width', '100%', 'important');
+        catalogMain.style.setProperty('max-width', '100%', 'important');
+        catalogMain.style.setProperty('margin', '0px', 'important');
+        catalogMain.style.setProperty('padding', '0px', 'important');
+        catalogMain.style.setProperty('direction', 'rtl', 'important');
+        catalogMain.style.setProperty('text-align', 'right', 'important');
+      }
 
       const words = ['عرض المنتجات', 'الترتيب:', 'الترتيب', 'الأكثر طلباً', 'الأكثر طلبا', 'تقييماً', 'تقييما', 'ابحث باسم القطعة'];
       const els = Array.from(document.querySelectorAll('#catalog label, #catalog span, #catalog select, #catalog input, #catalog p'));
@@ -217,7 +239,7 @@
         const txt = (el.textContent || '').trim();
         const ph = (el.getAttribute && el.getAttribute('placeholder')) || '';
         if (words.some(w => txt.includes(w) || ph.includes(w))) {
-          el.remove();
+          el.style.setProperty('display', 'none', 'important');
         }
       }
     }
@@ -230,7 +252,7 @@
       if (!root) {
         root = document.createElement('div');
         root.id = 'liveStoreApp';
-        root.style.cssText = 'max-width:1200px; width:100%; margin:12px auto 40px; padding:0 14px; font-family:inherit; direction:rtl; text-align:right;';
+        root.style.cssText = 'max-width:1200px; width:100%; margin:4px auto 24px; padding:0 8px; font-family:inherit; direction:rtl; text-align:right;';
       }
 
       if (catalogSection && root.parentNode !== catalogSection) {
@@ -248,9 +270,9 @@
       if (!wrap) {
         wrap = document.createElement('div');
         wrap.id = 'liveProductsSection';
-        wrap.style.cssText = 'direction:rtl; text-align:right;';
+        wrap.style.cssText = 'direction:rtl; text-align:right; margin-top:0;';
         wrap.innerHTML = `
-          <h2 id="liveProductsTitle" style="margin:8px 0 14px; font-size:1.25rem; font-weight:900; color:#0f172a; text-align:right;">المنتجات المتوفرة</h2>
+          <h2 id="liveProductsTitle" style="margin:0 0 12px; font-size:1.25rem; font-weight:900; color:#0f172a; text-align:right;">المنتجات المتوفرة</h2>
           <div id="liveProductsGrid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:16px; justify-content:start; align-items:stretch;"></div>
         `;
       }
@@ -294,7 +316,7 @@
       if (!box) {
         box = document.createElement('div');
         box.id = 'liveCartBox';
-        box.style.cssText = 'background:#fff; border:1px solid #cbd5e1; border-radius:14px; padding:16px; margin-top:24px; box-shadow:0 6px 20px rgba(15,23,42,0.06); text-align:right;';
+        box.style.cssText = 'background:#fff; border:1px solid #cbd5e1; border-radius:14px; padding:16px; margin-top:20px; box-shadow:0 6px 20px rgba(15,23,42,0.06); text-align:right;';
       }
       root.appendChild(box);
 
