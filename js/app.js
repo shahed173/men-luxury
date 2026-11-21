@@ -199,7 +199,6 @@
       this.cart = [];
       this.wishlist = [];
       this.appliedPromo = null;
-      this.paymentMethod = 'cash_on_delivery';
       this.currentFilter = {
         category: 'all',
         search: '',
@@ -217,18 +216,17 @@
         toast.id = 'eleganceToast';
         toast.style.cssText = [
           'position:fixed',
-          'bottom:24px',
-          'left:24px',
-          'z-index:99999',
+          'bottom:20px',
+          'left:20px',
+          'z-index:200000',
           'padding:12px 18px',
           'border-radius:10px',
           'color:#fff',
           'font-weight:700',
           'font-size:0.9rem',
-          'box-shadow:0 10px 25px rgba(0,0,0,0.25)',
-          'transition:opacity 0.25s ease,transform 0.25s ease',
+          'box-shadow:0 10px 25px rgba(0,0,0,0.3)',
+          'transition:opacity 0.25s ease',
           'opacity:0',
-          'transform:translateY(10px)',
           'pointer-events:none',
           'max-width:90vw'
         ].join(';');
@@ -237,11 +235,9 @@
       toast.style.background = isError ? '#dc2626' : '#0f172a';
       toast.textContent = String(message || '');
       toast.style.opacity = '1';
-      toast.style.transform = 'translateY(0)';
       clearTimeout(this._toastTimer);
       this._toastTimer = setTimeout(() => {
         toast.style.opacity = '0';
-        toast.style.transform = 'translateY(10px)';
       }, 2800);
     }
 
@@ -397,6 +393,7 @@
       }
       this.saveStorage();
       this.updateCartUI();
+      this.renderGuaranteedCartModal();
     }
 
     removeCartItem(index) {
@@ -404,28 +401,28 @@
       this.cart.splice(index, 1);
       this.saveStorage();
       this.updateCartUI();
+      this.renderGuaranteedCartModal();
       this.showToast('تم حذف المنتج من السلة');
     }
 
     applyPromoCode(rawCode) {
       const code = String(rawCode || '').trim().toUpperCase();
-      const input = document.getElementById('couponCodeInput') || document.getElementById('promoCodeInput');
       if (!code) {
-        this.showToast('يرجى إدخال كود الخصم أولاً', true);
+        this.showToast('اكتبي كود الخصم أولاً مثل ELEGANCE20', true);
         return;
       }
       if (!Object.prototype.hasOwnProperty.call(PROMO_CODES, code)) {
-        this.showToast('كود الخصم غير صحيح (جرّبي ELEGANCE20)', true);
+        this.showToast('كود الخصم غير صحيح. جرّبي: ELEGANCE20', true);
         return;
       }
       this.appliedPromo = {
         code,
         rate: PROMO_CODES[code]
       };
-      if (input) input.value = code;
       this.saveStorage();
       this.updateCartUI();
-      this.showToast(`تم تطبيق كود الخصم ${code} بنجاح!`);
+      this.renderGuaranteedCartModal();
+      this.showToast(`تم تطبيق الخصم (${code}) بنجاح!`);
     }
 
     getCartTotals() {
@@ -433,49 +430,10 @@
       const subtotal = this.cart.reduce((s, i) => s + (Number(i.price) || 0) * (Number(i.quantity) || 1), 0);
       const discountRate = this.appliedPromo ? Number(this.appliedPromo.rate) || 0 : 0;
       const discount = subtotal * discountRate;
-      const discountedSubtotal = Math.max(0, subtotal - discount);
-      const shipping = subtotal === 0 || discountedSubtotal >= this.freeShippingThreshold ? 0 : this.shippingFee;
-      const total = discountedSubtotal + shipping;
+      const afterDiscount = Math.max(0, subtotal - discount);
+      const shipping = subtotal === 0 || afterDiscount >= this.freeShippingThreshold ? 0 : this.shippingFee;
+      const total = afterDiscount + shipping;
       return { count, subtotal, discount, shipping, total };
-    }
-
-    renderCartItems() {
-      const container = document.getElementById('drawerCartItems') || document.getElementById('cartItemsContainer');
-      if (!container) return;
-
-      if (!this.cart.length) {
-        container.innerHTML = `
-          <div style="text-align:center; padding:40px 16px; color:#64748b;">
-            <i class="fa-solid fa-bag-shopping" style="font-size:2.4rem; margin-bottom:12px; opacity:0.45;"></i>
-            <p style="font-weight:700; margin-bottom:6px;">السلة فارغة حالياً</p>
-            <p style="font-size:0.86rem;">أضيفي المنتجات التي تعجبك لتظهر هنا وتتمكني من إتمام الطلب.</p>
-          </div>
-        `;
-        return;
-      }
-
-      container.innerHTML = this.cart.map((item, idx) => {
-        const qty = Number(item.quantity) || 1;
-        const unitPrice = Number(item.price) || 0;
-        const lineTotal = unitPrice * qty;
-        return `
-          <div style="display:flex; gap:12px; align-items:center; padding:12px; border:1px solid #e2e8f0; border-radius:10px; background:#fff; margin-bottom:10px;">
-            <img src="${item.image || ''}" alt="${item.name}" style="width:64px; height:76px; object-fit:cover; border-radius:8px; flex-shrink:0; background:#f8fafc;" />
-            <div style="flex:1; min-width:0;">
-              <div style="font-weight:800; font-size:0.92rem; color:#0f172a; margin-bottom:4px;">${item.name}</div>
-              <div style="font-size:0.84rem; color:#64748b; margin-bottom:8px;">السعر: ${this.formatPrice(unitPrice)} × ${qty} = <strong style="color:#0f172a;">${this.formatPrice(lineTotal)}</strong></div>
-              <div style="display:flex; align-items:center; gap:8px;">
-                <button type="button" onclick="window.app.changeCartQty(${idx}, -1)" style="width:28px; height:28px; border:1px solid #cbd5e1; border-radius:6px; background:#f8fafc; font-weight:800; cursor:pointer;">-</button>
-                <span style="font-weight:800; min-width:20px; text-align:center;">${qty}</span>
-                <button type="button" onclick="window.app.changeCartQty(${idx}, 1)" style="width:28px; height:28px; border:1px solid #cbd5e1; border-radius:6px; background:#f8fafc; font-weight:800; cursor:pointer;">+</button>
-                <button type="button" onclick="window.app.removeCartItem(${idx})" style="margin-right:auto; border:none; background:#fee2e2; color:#b91c1c; padding:5px 10px; border-radius:6px; font-size:0.8rem; font-weight:700; cursor:pointer;">
-                  <i class="fa-regular fa-trash-can"></i> حذف
-                </button>
-              </div>
-            </div>
-          </div>
-        `;
-      }).join('');
     }
 
     updateCartUI() {
@@ -483,10 +441,8 @@
 
       document.querySelectorAll('.cart-count, #cartCount, .cart-badge-count').forEach(el => {
         el.textContent = String(count);
-        el.style.display = count > 0 ? '' : 'none';
+        el.style.display = count > 0 ? 'inline-flex' : 'none';
       });
-
-      this.renderCartItems();
 
       const subEl = document.getElementById('cartSubtotal') || document.getElementById('drawerSubtotal');
       if (subEl) subEl.textContent = this.formatPrice(subtotal);
@@ -511,58 +467,117 @@
       if (totEl) totEl.textContent = this.formatPrice(total);
     }
 
+    getOrCreateOverlay() {
+      let overlay = document.getElementById('guaranteedShopOverlay');
+      if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'guaranteedShopOverlay';
+        overlay.style.cssText = [
+          'position:fixed',
+          'inset:0',
+          'background:rgba(15,23,42,0.72)',
+          'z-index:150000',
+          'display:none',
+          'align-items:center',
+          'justify-content:center',
+          'padding:14px',
+          'overflow-y:auto'
+        ].join(';');
+        document.body.appendChild(overlay);
+        overlay.addEventListener('click', e => {
+          if (e.target === overlay) this.closeShopOverlay();
+        });
+      }
+      return overlay;
+    }
+
+    closeShopOverlay() {
+      const overlay = document.getElementById('guaranteedShopOverlay');
+      if (overlay) overlay.style.display = 'none';
+    }
+
     openCartDrawer() {
-      this.updateCartUI();
-      const drawer = document.getElementById('cartDrawer');
-      const backdrop = document.getElementById('cartDrawerBackdrop');
-      if (drawer) drawer.classList.add('open');
-      if (backdrop) backdrop.classList.add('open');
+      this.renderGuaranteedCartModal();
+      const overlay = this.getOrCreateOverlay();
+      overlay.style.display = 'flex';
     }
 
-    closeCartDrawer() {
-      const drawer = document.getElementById('cartDrawer');
-      const backdrop = document.getElementById('cartDrawerBackdrop');
-      if (drawer) drawer.classList.remove('open');
-      if (backdrop) backdrop.classList.remove('open');
-    }
+    renderGuaranteedCartModal() {
+      const overlay = this.getOrCreateOverlay();
+      const { subtotal, discount, shipping, total } = this.getCartTotals();
+      const promoVal = this.appliedPromo ? this.appliedPromo.code : '';
 
-    closeModal(modalId) {
-      const el = document.getElementById(modalId);
-      if (el) el.classList.remove('open');
-    }
+      const itemsHtml = !this.cart.length
+        ? `<div style="text-align:center; padding:28px 12px; color:#64748b; background:#f8fafc; border-radius:12px; border:1px solid #e2e8f0;">
+             <div style="font-size:1.05rem; font-weight:800; color:#0f172a; margin-bottom:6px;">سلتك فارغة حالياً</div>
+             <div style="font-size:0.88rem;">اضغطي على "إضافة إلى السلة" لأي منتج لتشاهدي هنا وتتممي الشراء.</div>
+           </div>`
+        : this.cart.map((item, idx) => {
+            const qty = Number(item.quantity) || 1;
+            const unitPrice = Number(item.price) || 0;
+            return `
+              <div style="display:flex; gap:12px; align-items:center; padding:10px; border:1px solid #e2e8f0; border-radius:12px; background:#fff; margin-bottom:10px;">
+                <img src="${item.image || ''}" alt="${item.name}" style="width:62px; height:74px; object-fit:cover; border-radius:8px; flex-shrink:0; background:#f1f5f9;" />
+                <div style="flex:1; min-width:0;">
+                  <div style="font-weight:800; font-size:0.92rem; color:#0f172a; margin-bottom:4px;">${item.name}</div>
+                  <div style="font-size:0.84rem; color:#475569; margin-bottom:8px;">
+                    ${this.formatPrice(unitPrice)} × ${qty} = <strong style="color:#0f172a;">${this.formatPrice(unitPrice * qty)}</strong>
+                  </div>
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <button type="button" id="qtyMinus_${idx}" style="width:28px; height:28px; border:1px solid #cbd5e1; border-radius:6px; background:#f8fafc; font-weight:800; cursor:pointer;">-</button>
+                    <span style="font-weight:800; min-width:20px; text-align:center;">${qty}</span>
+                    <button type="button" id="qtyPlus_${idx}" style="width:28px; height:28px; border:1px solid #cbd5e1; border-radius:6px; background:#f8fafc; font-weight:800; cursor:pointer;">+</button>
+                    <button type="button" id="qtyDel_${idx}" style="margin-right:auto; border:none; background:#fee2e2; color:#b91c1c; padding:5px 10px; border-radius:6px; font-size:0.8rem; font-weight:700; cursor:pointer;">حذف</button>
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join('');
 
-    ensureCheckoutModal() {
-      let modal = document.getElementById('checkoutModal');
-      if (modal) return modal;
+      overlay.innerHTML = `
+        <div style="background:#fff; width:100%; max-width:520px; max-height:92vh; overflow-y:auto; border-radius:16px; padding:22px; box-shadow:0 24px 60px rgba(0,0,0,0.35); position:relative; direction:rtl; text-align:right;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; padding-bottom:10px; border-bottom:1px solid #e2e8f0;">
+            <h2 style="margin:0; font-size:1.25rem; font-weight:900; color:#0f172a;">محتويات السلة والخصم</h2>
+            <button type="button" id="closeShopModalBtn" style="width:34px; height:34px; border-radius:50%; border:1px solid #e2e8f0; background:#f8fafc; font-size:1rem; font-weight:800; cursor:pointer;">✕</button>
+          </div>
 
-      modal = document.createElement('div');
-      modal.id = 'checkoutModal';
-      modal.style.cssText = [
-        'position:fixed',
-        'inset:0',
-        'background:rgba(15,23,42,0.65)',
-        'display:flex',
-        'align-items:center',
-        'justify-content:center',
-        'padding:16px',
-        'z-index:9999'
-      ].join(';');
+          <div style="margin-bottom:14px;">${itemsHtml}</div>
 
-      modal.innerHTML = `
-        <div style="background:#fff; width:100%; max-width:540px; max-height:92vh; overflow-y:auto; border-radius:16px; padding:24px; box-shadow:0 24px 60px rgba(0,0,0,0.35); position:relative;">
-          <button type="button" id="closeDynamicCheckoutBtn" aria-label="إغلاق" style="position:absolute; top:16px; left:16px; width:34px; height:34px; border-radius:50%; border:1px solid #e2e8f0; background:#f8fafc; font-size:1.1rem; cursor:pointer;">✕</button>
-          <div id="checkoutContentArea"></div>
+          <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:12px; margin-bottom:14px;">
+            <label style="display:block; font-weight:800; font-size:0.86rem; color:#0f172a; margin-bottom:6px;">كود الخصم (جرّبي ELEGANCE20 أو WELCOME15 أو ELEGANCE10)</label>
+            <div style="display:flex; gap:8px;">
+              <input type="text" id="modalPromoInput" value="${promoVal}" placeholder="اكتبي كود الخصم هنا" style="flex:1; padding:9px 12px; border:1px solid #cbd5e1; border-radius:8px; font-family:inherit; font-size:0.9rem;" />
+              <button type="button" id="modalApplyPromoBtn" style="padding:9px 14px; border:none; border-radius:8px; background:#0f172a; color:#fff; font-weight:800; cursor:pointer;">تطبيق</button>
+            </div>
+          </div>
+
+          <div style="border-top:1px solid #e2e8f0; padding-top:12px; font-size:0.92rem;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span>المجموع الفرعي:</span><span>${this.formatPrice(subtotal)}</span></div>
+            ${discount > 0 ? `<div style="display:flex; justify-content:space-between; margin-bottom:6px; color:#15803d; font-weight:800;"><span>الخصم (${this.appliedPromo.code}):</span><span>-${this.formatPrice(discount)}</span></div>` : ''}
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span>التوصيل:</span><span>${subtotal === 0 ? 'مجاني فوق 50 د.أ' : (shipping === 0 ? 'مجاني' : this.formatPrice(shipping))}</span></div>
+            <div style="display:flex; justify-content:space-between; padding-top:8px; border-top:1px solid #cbd5e1; font-weight:900; font-size:1.08rem; color:#0f172a;"><span>المجموع الكلي:</span><span>${this.formatPrice(total)}</span></div>
+          </div>
+
+          <button type="button" id="goToCheckoutStepBtn" style="margin-top:14px; width:100%; padding:12px; border:none; border-radius:10px; background:#0f172a; color:#fff; font-weight:900; font-size:1rem; cursor:pointer;">
+            إتمام عملية الدفع
+          </button>
         </div>
       `;
-      document.body.appendChild(modal);
 
-      modal.addEventListener('click', e => {
-        if (e.target === modal) modal.style.display = 'none';
+      overlay.querySelector('#closeShopModalBtn')?.addEventListener('click', () => this.closeShopOverlay());
+
+      this.cart.forEach((_, idx) => {
+        overlay.querySelector(`#qtyMinus_${idx}`)?.addEventListener('click', () => this.changeCartQty(idx, -1));
+        overlay.querySelector(`#qtyPlus_${idx}`)?.addEventListener('click', () => this.changeCartQty(idx, 1));
+        overlay.querySelector(`#qtyDel_${idx}`)?.addEventListener('click', () => this.removeCartItem(idx));
       });
-      modal.querySelector('#closeDynamicCheckoutBtn')?.addEventListener('click', () => {
-        modal.style.display = 'none';
+
+      overlay.querySelector('#modalApplyPromoBtn')?.addEventListener('click', () => {
+        const val = overlay.querySelector('#modalPromoInput')?.value || '';
+        this.applyPromoCode(val);
       });
-      return modal;
+
+      overlay.querySelector('#goToCheckoutStepBtn')?.addEventListener('click', () => this.openCheckoutModal());
     }
 
     openCheckoutModal() {
@@ -571,141 +586,112 @@
         return;
       }
 
-      this.closeCartDrawer();
-      const modal = this.ensureCheckoutModal();
-      const area = modal.querySelector('#checkoutContentArea') || modal;
+      const overlay = this.getOrCreateOverlay();
+      overlay.style.display = 'flex';
       const { subtotal, discount, shipping, total } = this.getCartTotals();
-      const currentCode = this.appliedPromo ? this.appliedPromo.code : '';
 
-      const itemsSummaryHtml = this.cart.map(item => {
+      const summaryRows = this.cart.map(item => {
         const qty = Number(item.quantity) || 1;
-        const lineTotal = (Number(item.price) || 0) * qty;
         return `
-          <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px dashed #e2e8f0; font-size:0.88rem;">
+          <div style="display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px dashed #e2e8f0; font-size:0.88rem;">
             <span><strong>${item.name}</strong> × ${qty}</span>
-            <span style="font-weight:800;">${this.formatPrice(lineTotal)}</span>
+            <span style="font-weight:800;">${this.formatPrice((Number(item.price) || 0) * qty)}</span>
           </div>
         `;
       }).join('');
 
-      area.innerHTML = `
-        <h2 style="margin:0 0 6px; font-size:1.35rem; font-weight:900; color:#0f172a;">إتمام الطلب وتأكيد الدفع</h2>
-        <p style="margin:0 0 16px; color:#64748b; font-size:0.88rem;">أدخلي العنوان ورقم التليفون وكود الخصم إن وُجد ثم أكّدي الدفع.</p>
-
-        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:12px 14px; margin-bottom:16px;">
-          <div style="font-weight:800; font-size:0.9rem; margin-bottom:6px; color:#0f172a;">المنتجات المختارة:</div>
-          ${itemsSummaryHtml}
-          <div style="display:flex; gap:8px; margin-top:12px;">
-            <input type="text" id="checkoutPromoInput" value="${currentCode}" placeholder="كود الخصم (مثال: ELEGANCE20)" style="flex:1; padding:8px 12px; border:1px solid #cbd5e1; border-radius:8px; font-family:inherit; font-size:0.88rem;" />
-            <button type="button" id="checkoutApplyPromoBtn" style="padding:8px 14px; border:none; border-radius:8px; background:#0f172a; color:#fff; font-weight:700; cursor:pointer;">تطبيق الخصم</button>
-          </div>
-          <div id="checkoutTotalsBox" style="margin-top:12px; font-size:0.9rem;">
-            <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span>المجموع الفرعي:</span><span>${this.formatPrice(subtotal)}</span></div>
-            ${discount > 0 ? `<div style="display:flex; justify-content:space-between; margin-bottom:4px; color:#15803d; font-weight:700;"><span>الخصم (${this.appliedPromo.code}):</span><span>- ${this.formatPrice(discount)}</span></div>` : ''}
-            <div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span>التوصيل:</span><span>${shipping === 0 ? 'مجاني' : this.formatPrice(shipping)}</span></div>
-            <div style="display:flex; justify-content:space-between; padding-top:8px; border-top:1px solid #cbd5e1; font-weight:900; font-size:1.05rem; color:#0f172a;"><span>المجموع النهائي:</span><span>${this.formatPrice(total)}</span></div>
-          </div>
-        </div>
-
-        <form id="directCheckoutForm" style="display:grid; gap:12px;">
-          <div>
-            <label style="display:block; font-weight:700; font-size:0.88rem; margin-bottom:4px;">الاسم الكامل *</label>
-            <input type="text" id="orderFullName" required placeholder="مثال: شهد" style="width:100%; padding:10px 12px; border:1px solid #cbd5e1; border-radius:8px; font-family:inherit; box-sizing:border-box;" />
+      overlay.innerHTML = `
+        <div style="background:#fff; width:100%; max-width:520px; max-height:92vh; overflow-y:auto; border-radius:16px; padding:22px; box-shadow:0 24px 60px rgba(0,0,0,0.35); position:relative; direction:rtl; text-align:right;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; padding-bottom:10px; border-bottom:1px solid #e2e8f0;">
+            <h2 style="margin:0; font-size:1.25rem; font-weight:900; color:#0f172a;">بيانات التوصيل وتأكيد الدفع</h2>
+            <button type="button" id="backToCartFromCheckoutBtn" style="padding:6px 10px; border-radius:8px; border:1px solid #cbd5e1; background:#f8fafc; font-size:0.82rem; font-weight:700; cursor:pointer;">رجوع للسلة</button>
           </div>
 
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-            <div>
-              <label style="display:block; font-weight:700; font-size:0.88rem; margin-bottom:4px;">رقم التليفون *</label>
-              <input type="tel" id="orderPhone" required placeholder="07XXXXXXXX" style="width:100%; padding:10px 12px; border:1px solid #cbd5e1; border-radius:8px; font-family:inherit; box-sizing:border-box;" />
+          <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:12px; margin-bottom:14px;">
+            <div style="font-weight:800; font-size:0.88rem; margin-bottom:6px;">ملخص الطلب:</div>
+            ${summaryRows}
+            <div style="margin-top:8px; font-size:0.88rem;">
+              <div style="display:flex; justify-content:space-between;"><span>المجموع الفرعي:</span><span>${this.formatPrice(subtotal)}</span></div>
+              ${discount > 0 ? `<div style="display:flex; justify-content:space-between; color:#15803d; font-weight:800;"><span>الخصم (${this.appliedPromo.code}):</span><span>-${this.formatPrice(discount)}</span></div>` : ''}
+              <div style="display:flex; justify-content:space-between;"><span>التوصيل:</span><span>${shipping === 0 ? 'مجاني' : this.formatPrice(shipping)}</span></div>
+              <div style="display:flex; justify-content:space-between; margin-top:6px; padding-top:6px; border-top:1px solid #cbd5e1; font-weight:900; font-size:1.05rem;"><span>المطلوب دفعه:</span><span>${this.formatPrice(total)}</span></div>
             </div>
+          </div>
+
+          <form id="finalPaymentForm" style="display:grid; gap:11px;">
             <div>
-              <label style="display:block; font-weight:700; font-size:0.88rem; margin-bottom:4px;">المحافظة *</label>
-              <select id="orderCity" style="width:100%; padding:10px 12px; border:1px solid #cbd5e1; border-radius:8px; font-family:inherit; box-sizing:border-box;">
-                <option value="عجلون" selected>عجلون</option>
-                <option value="عمّان">عمّان</option>
-                <option value="إربد">إربد</option>
-                <option value="الزرقاء">الزرقاء</option>
-                <option value="جرش">جرش</option>
-                <option value="البلقاء">البلقاء</option>
-                <option value="مادبا">مادبا</option>
-                <option value="العقبة">العقبة</option>
+              <label style="display:block; font-weight:800; font-size:0.88rem; margin-bottom:4px;">الاسم *</label>
+              <input type="text" id="payNameInput" required placeholder="اكتبي اسمك" style="width:100%; padding:9px 12px; border:1px solid #cbd5e1; border-radius:8px; font-family:inherit; box-sizing:border-box;" />
+            </div>
+
+            <div>
+              <label style="display:block; font-weight:800; font-size:0.88rem; margin-bottom:4px;">رقم التليفون *</label>
+              <input type="tel" id="payPhoneInput" required placeholder="07XXXXXXXX" style="width:100%; padding:9px 12px; border:1px solid #cbd5e1; border-radius:8px; font-family:inherit; box-sizing:border-box;" />
+            </div>
+
+            <div>
+              <label style="display:block; font-weight:800; font-size:0.88rem; margin-bottom:4px;">المكان (المحافظة، المنطقة، الشارع أو أقرب علامة) *</label>
+              <input type="text" id="payPlaceInput" required placeholder="مثال: عجلون / عمّان - الحي والشارع" style="width:100%; padding:9px 12px; border:1px solid #cbd5e1; border-radius:8px; font-family:inherit; box-sizing:border-box;" />
+            </div>
+
+            <div>
+              <label style="display:block; font-weight:800; font-size:0.88rem; margin-bottom:4px;">طريقة الدفع</label>
+              <select id="payMethodSelect" style="width:100%; padding:9px 12px; border:1px solid #cbd5e1; border-radius:8px; font-family:inherit; box-sizing:border-box;">
+                <option value="الدفع عند الاستلام">الدفع عند الاستلام</option>
+                <option value="بطاقة / دفع إلكتروني">بطاقة / دفع إلكتروني</option>
               </select>
             </div>
-          </div>
 
-          <div>
-            <label style="display:block; font-weight:700; font-size:0.88rem; margin-bottom:4px;">المكان / العنوان التفصيلي *</label>
-            <input type="text" id="orderAddress" required placeholder="الحي، الشارع، رقم البناء أو أقرب معلم" style="width:100%; padding:10px 12px; border:1px solid #cbd5e1; border-radius:8px; font-family:inherit; box-sizing:border-box;" />
-          </div>
-
-          <div>
-            <label style="display:block; font-weight:700; font-size:0.88rem; margin-bottom:4px;">طريقة الدفع</label>
-            <select id="orderPaymentMethod" style="width:100%; padding:10px 12px; border:1px solid #cbd5e1; border-radius:8px; font-family:inherit; box-sizing:border-box;">
-              <option value="الدفع عند الاستلام" ${this.paymentMethod === 'الدفع عند الاستلام' ? 'selected' : ''}>الدفع عند الاستلام</option>
-              <option value="بطاقة ائتمانية / إلكتروني" ${this.paymentMethod === 'بطاقة ائتمانية / إلكتروني' ? 'selected' : ''}>بطاقة ائتمانية / إلكتروني</option>
-            </select>
-          </div>
-
-          <button type="submit" id="confirmOrderPaymentBtn" style="margin-top:6px; width:100%; padding:12px; border:none; border-radius:10px; background:#0f172a; color:#fff; font-weight:800; font-size:1rem; cursor:pointer;">
-            تأكيد الدفع وإتمام الطلب
-          </button>
-        </form>
+            <button type="submit" style="margin-top:6px; width:100%; padding:12px; border:none; border-radius:10px; background:#0f172a; color:#fff; font-weight:900; font-size:1rem; cursor:pointer;">
+              تأكيد الدفع
+            </button>
+          </form>
+        </div>
       `;
 
-      modal.style.display = 'flex';
-      modal.classList.add('open');
+      overlay.querySelector('#backToCartFromCheckoutBtn')?.addEventListener('click', () => this.renderGuaranteedCartModal());
 
-      modal.querySelector('#checkoutApplyPromoBtn')?.addEventListener('click', () => {
-        const codeVal = modal.querySelector('#checkoutPromoInput')?.value || '';
-        this.applyPromoCode(codeVal);
-        this.openCheckoutModal();
-      });
-
-      modal.querySelector('#directCheckoutForm')?.addEventListener('submit', e => {
+      overlay.querySelector('#finalPaymentForm')?.addEventListener('submit', e => {
         e.preventDefault();
-        const name = (modal.querySelector('#orderFullName')?.value || '').trim();
-        const phone = (modal.querySelector('#orderPhone')?.value || '').trim();
-        const city = (modal.querySelector('#orderCity')?.value || '').trim();
-        const address = (modal.querySelector('#orderAddress')?.value || '').trim();
-        const method = modal.querySelector('#orderPaymentMethod')?.value || 'الدفع عند الاستلام';
+        const name = (overlay.querySelector('#payNameInput')?.value || '').trim();
+        const phone = (overlay.querySelector('#payPhoneInput')?.value || '').trim();
+        const place = (overlay.querySelector('#payPlaceInput')?.value || '').trim();
+        const method = overlay.querySelector('#payMethodSelect')?.value || 'الدفع عند الاستلام';
 
-        if (!name || !phone || !address) {
-          this.showToast('يرجى تعبئة الاسم ورقم التليفون والمكان', true);
+        if (!name || !phone || !place) {
+          this.showToast('يرجى إدخال الاسم ورقم التليفون والمكان', true);
           return;
         }
 
-        const finalTotals = this.getCartTotals();
-        const orderNumber = `ELG-${Math.floor(100000 + Math.random() * 900000)}`;
+        const paidTotals = this.getCartTotals();
+        const orderCode = `ORD-${Math.floor(100000 + Math.random() * 900000)}`;
 
         this.cart = [];
         this.appliedPromo = null;
         this.saveStorage();
         this.updateCartUI();
 
-        area.innerHTML = `
-          <div style="text-align:center; padding:12px 6px;">
-            <div style="width:54px; height:54px; line-height:54px; border-radius:50%; background:#dcfce7; color:#15803d; font-size:1.5rem; margin:0 auto 12px;">✓</div>
-            <h2 style="margin:0 0 6px; font-size:1.35rem; font-weight:900; color:#0f172a;">تم تأكيد الدفع بنجاح</h2>
-            <p style="margin:0 0 16px; color:#64748b; font-size:0.9rem;">رقم الطلب: <strong>${orderNumber}</strong></p>
+        overlay.innerHTML = `
+          <div style="background:#fff; width:100%; max-width:480px; border-radius:16px; padding:24px; box-shadow:0 24px 60px rgba(0,0,0,0.35); direction:rtl; text-align:center;">
+            <div style="width:52px; height:52px; line-height:52px; border-radius:50%; background:#dcfce7; color:#15803d; font-size:1.5rem; font-weight:900; margin:0 auto 12px;">✓</div>
+            <h2 style="margin:0 0 6px; font-size:1.3rem; font-weight:900; color:#0f172a;">تم تأكيد الدفع بنجاح</h2>
+            <p style="margin:0 0 14px; color:#64748b; font-size:0.9rem;">رقم الطلب: <strong>${orderCode}</strong></p>
 
-            <div style="text-align:right; background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:14px; font-size:0.9rem; margin-bottom:18px;">
+            <div style="text-align:right; background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:14px; font-size:0.9rem; margin-bottom:16px;">
               <div style="margin-bottom:6px;"><strong>الاسم:</strong> ${name}</div>
               <div style="margin-bottom:6px;"><strong>رقم التليفون:</strong> <span dir="ltr">${phone}</span></div>
-              <div style="margin-bottom:6px;"><strong>المكان:</strong> ${city} — ${address}</div>
+              <div style="margin-bottom:6px;"><strong>المكان:</strong> ${place}</div>
               <div style="margin-bottom:6px;"><strong>طريقة الدفع:</strong> ${method}</div>
-              <div><strong>المبلغ المدفوع:</strong> <span style="font-weight:900; color:#0f172a;">${this.formatPrice(finalTotals.total)}</span></div>
+              <div><strong>الإجمالي:</strong> <strong style="color:#0f172a;">${this.formatPrice(paidTotals.total)}</strong></div>
             </div>
 
-            <button type="button" id="doneCheckoutBtn" style="width:100%; padding:11px; border:none; border-radius:10px; background:#0f172a; color:#fff; font-weight:800; cursor:pointer;">
-              العودة إلى المتجر
+            <button type="button" id="finishOrderBtn" style="width:100%; padding:11px; border:none; border-radius:10px; background:#0f172a; color:#fff; font-weight:900; cursor:pointer;">
+              حسناً
             </button>
           </div>
         `;
 
-        modal.querySelector('#doneCheckoutBtn')?.addEventListener('click', () => {
-          modal.style.display = 'none';
-          modal.classList.remove('open');
-        });
+        overlay.querySelector('#finishOrderBtn')?.addEventListener('click', () => this.closeShopOverlay());
       });
     }
 
@@ -715,165 +701,4 @@
       if (idx > -1) this.wishlist.splice(idx, 1);
       else this.wishlist.push(numId);
       this.saveStorage();
-      document.querySelectorAll('.wishlist-count, #wishlistCount, .wishlist-badge-count').forEach(el => {
-        el.textContent = String(this.wishlist.length);
-      });
-      this.renderCatalog();
-      this.renderHomeFeatured();
-    }
-
-    cardHtml(product) {
-      const price = Number(product.price) || 0;
-      const oldPrice = product.original_price ? Number(product.original_price) : null;
-      const hasDiscount = oldPrice !== null && oldPrice > price;
-      const img = Array.isArray(product.images) && product.images.length ? product.images[0] : '';
-      const wished = this.wishlist.includes(Number(product.id));
-
-      return `
-        <div class="product-card" data-id="${product.id}" data-category="${product.category_slug || ''}">
-          <div class="product-image-wrap" style="height:260px; overflow:hidden; border-radius:10px; background:#f8fafc;">
-            <img src="${img}" alt="${product.name}" loading="lazy" style="width:100%; height:100%; object-fit:cover; object-position:center; display:block;">
-            <button type="button" class="btn-wishlist ${wished ? 'active' : ''}" onclick="window.app.toggleWishlist(${product.id})" aria-label="المفضلة">
-              <i class="${wished ? 'fa-solid' : 'fa-regular'} fa-heart"></i>
-            </button>
-          </div>
-          <div class="product-info">
-            <span class="product-category">${product.category_name || ''}</span>
-            <h3 class="product-title">${product.name}</h3>
-            <div class="product-price-row">
-              <span class="current-price">${this.formatPrice(price)}</span>
-              ${hasDiscount ? `<span class="old-price">${this.formatPrice(oldPrice)}</span>` : ''}
-            </div>
-            <button type="button" class="btn-add-cart" onclick="window.app.quickAdd(${product.id})">
-              <i class="fa-solid fa-cart-plus"></i> إضافة إلى السلة
-            </button>
-          </div>
-        </div>
-      `;
-    }
-
-    renderHomeFeatured() {
-      const box = document.getElementById('homeFeaturedProducts');
-      if (!box) return;
-      const all = this.getProductsList();
-      const items = all.filter(p => p.is_featured || p.is_bestseller);
-      box.innerHTML = (items.length ? items.slice(0, 4) : all.slice(0, 4))
-        .map(p => this.cardHtml(p))
-        .join('');
-    }
-
-    renderCatalog() {
-      const grid = document.getElementById('catalogProductsGrid');
-      if (!grid) return;
-      const list = this.getFilteredProducts();
-      const countEl = document.getElementById('catalogResultsCount');
-      if (countEl) countEl.textContent = `عرض ${list.length} منتج`;
-      if (!list.length) {
-        grid.innerHTML = '<p class="empty-catalog-msg">لا توجد منتجات مطابقة للفئة المختارة حالياً.</p>';
-        return;
-      }
-      grid.innerHTML = list.map(p => this.cardHtml(p)).join('');
-    }
-
-    bindEvents() {
-      const search = document.getElementById('catalogSearchInput') || document.getElementById('searchInput');
-      if (search && !search.dataset.bound) {
-        search.dataset.bound = '1';
-        search.addEventListener('input', e => this.setSearch(e.target.value));
-      }
-
-      const range = document.getElementById('maxPriceRange') || document.getElementById('priceRangeSlider');
-      if (range && !range.dataset.bound) {
-        range.dataset.bound = '1';
-        range.addEventListener('input', e => this.setMaxPrice(e.target.value));
-      }
-
-      const sort = document.getElementById('catalogSortSelect') || document.getElementById('sortSelect');
-      if (sort && !sort.dataset.bound) {
-        sort.dataset.bound = '1';
-        sort.addEventListener('change', e => this.setSort(e.target.value));
-      }
-
-      const openCartBtn = document.getElementById('openCartBtn');
-      if (openCartBtn && !openCartBtn.dataset.bound) {
-        openCartBtn.dataset.bound = '1';
-        openCartBtn.addEventListener('click', () => this.openCartDrawer());
-      }
-
-      const closeCartBtn = document.getElementById('closeCartDrawerBtn');
-      if (closeCartBtn && !closeCartBtn.dataset.bound) {
-        closeCartBtn.dataset.bound = '1';
-        closeCartBtn.addEventListener('click', () => this.closeCartDrawer());
-      }
-
-      const backdrop = document.getElementById('cartDrawerBackdrop');
-      if (backdrop && !backdrop.dataset.bound) {
-        backdrop.dataset.bound = '1';
-        backdrop.addEventListener('click', () => this.closeCartDrawer());
-      }
-
-      const applyCouponBtn = document.getElementById('applyCouponBtn');
-      if (applyCouponBtn && !applyCouponBtn.dataset.bound) {
-        applyCouponBtn.dataset.bound = '1';
-        applyCouponBtn.addEventListener('click', () => {
-          const input = document.getElementById('couponCodeInput');
-          this.applyPromoCode(input ? input.value : '');
-        });
-      }
-
-      const checkoutBtn = document.getElementById('checkoutBtnFromDrawer');
-      if (checkoutBtn && !checkoutBtn.dataset.bound) {
-        checkoutBtn.dataset.bound = '1';
-        checkoutBtn.addEventListener('click', () => this.openCheckoutModal());
-      }
-
-      if (!document.body.dataset.catBound) {
-        document.body.dataset.catBound = '1';
-        document.addEventListener('click', e => {
-          const btn = e.target.closest('[data-category], [data-cat], .catalog-tab-btn, .filter-item');
-          if (!btn) return;
-          const val = btn.getAttribute('data-category') || btn.getAttribute('data-cat') || btn.textContent;
-          if (val) {
-            e.preventDefault();
-            this.setCategory(val);
-            document.getElementById('catalogProductsGrid')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-          }
-        });
-      }
-    }
-
-    async init() {
-      this.loadStorage();
-      if (this.appliedPromo && this.appliedPromo.code) {
-        const input = document.getElementById('couponCodeInput');
-        if (input) input.value = this.appliedPromo.code;
-      }
-      if (window.productsStore && typeof window.productsStore.init === 'function') {
-        try {
-          await window.productsStore.init();
-        } catch (_) {}
-      }
-      if (window.__pendingCategory) {
-        this.currentFilter.category = normalizeCategory(window.__pendingCategory);
-        window.__pendingCategory = null;
-      }
-      this.bindEvents();
-      this.syncActiveButtons();
-      this.renderHomeFeatured();
-      this.renderCatalog();
-      this.updateCartUI();
-    }
-  }
-
-  const instance = new LuxuryApp();
-  window.app = instance;
-  window.luxuryApp = instance;
-
-  const start = () => instance.init();
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', start);
-  } else {
-    start();
-  }
-})();
-        
+      document.querySelectorAll('.wishlist-count, #wishlistCount, .wishlist-badge-count').
